@@ -26,6 +26,18 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 #ui.off{opacity:0;visibility:hidden}
 #ui button{pointer-events:auto}
 
+/* 箸: 見た目だけで操作には関わらない */
+#hashi{position:fixed;left:0;top:0;width:0;height:0;pointer-events:none;display:none;will-change:transform;
+  filter:drop-shadow(10px 14px 7px rgba(50,25,8,.38))}
+#hashi.on{display:block}
+#hashi .stick{position:absolute;left:calc(clamp(13px,2.3vmin,22px)/-2);top:0;width:clamp(13px,2.3vmin,22px);height:clamp(420px,86vmin,860px);
+  transform-origin:50% 0;transition:transform .13s ease-out}
+#hashi .s1{transform:translateX(-5px) rotate(-136deg)}
+#hashi .s2{transform:translateX(5px) rotate(-124deg)}
+#hashi.down .s1{transform:translateX(-1.500px) rotate(-131.500deg)}
+#hashi.down .s2{transform:translateX(1.500px) rotate(-127.500deg)}
+canvas#gl.hashiCursor,canvas#gl.hashiCursor.grabbing{cursor:none}
+
 /* 左上: スコア */
 #score{position:absolute;left:calc(var(--gap) + env(safe-area-inset-left));top:calc(var(--gap) + env(safe-area-inset-top));
   padding:clamp(8px,1.5vmin,14px) clamp(12px,2.4vmin,24px);display:grid;grid-template-columns:auto auto auto;column-gap:clamp(10px,2vmin,20px);align-items:stretch}
@@ -88,6 +100,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 #toast{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.92);padding:clamp(14px,2.6vmin,26px) clamp(24px,5vmin,48px);text-align:center;opacity:0;transition:opacity .4s,transform .4s;pointer-events:none;min-width:min(78vw,300px)}
 #toast.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
 #toast.low{top:82%}
+#toast.high{top:22%}
 #toast h2{margin:0 0 .25em;font-size:clamp(20px,4.2vmin,34px);font-weight:600}
 #toast p{margin:.15em 0;font-size:clamp(12px,2vmin,16px);color:var(--ink2);font-variant-numeric:tabular-nums}
 #toast .sum{font-size:clamp(18px,3.4vmin,28px);color:var(--gold);font-weight:700;margin-top:.3em}
@@ -111,7 +124,9 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .card h1{margin-bottom:.3em}
 #ovTitle .card{padding:clamp(14px,2.6vmin,26px)}
 #ovTitle .btn{padding:.6em 1em;margin-top:.4em}
-#ovTitle .mini{margin-top:.7em}
+#ovTitle .mini{margin-top:.5em}
+#ovTitle .desc{margin-bottom:.5em}
+#ovTitle .tensionBox,#ovTitle .dripBox{padding:.5em .8em}
 .slider{display:flex;align-items:center;gap:.8em;margin:.7em 0;font-size:clamp(12px,2vmin,15px);text-align:left}
 .slider span{flex:none;width:4.5em}
 .slider input{flex:1;accent-color:#fff;height:26px;touch-action:auto}
@@ -125,13 +140,13 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .tab{flex:1;padding:.55em .4em;border-radius:99px;font-size:clamp(14px,2.3vmin,16px);color:var(--ink2);transition:background .2s}
 .tab.on{background:#fff;color:#2d6496;font-weight:700;text-shadow:none}
 .desc{margin:.1em 0 .8em;font-size:clamp(11px,1.9vmin,13px);line-height:1.6;color:var(--ink2)}
-.tensionBox{margin:.2em 0 .7em;padding:.7em .8em;border-radius:18px;background:rgba(20,50,90,.16);text-align:left}
-.tensionBox .ttl{font-size:clamp(12px,2vmin,14px);margin-bottom:.45em;display:block}
+.tensionBox,.dripBox{margin:.2em 0 .5em;padding:.7em .8em;border-radius:18px;background:rgba(20,50,90,.16);text-align:left}
+.tensionBox .ttl,.dripBox .ttl{font-size:clamp(12px,2vmin,14px);margin-bottom:.45em;display:block}
 .chips{display:flex;gap:5px}
 .chip{flex:1;padding:.4em 0;border-radius:99px;font-size:clamp(11px,1.9vmin,13px);border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.1)}
 .chip.on{background:#fff;color:#2d6496;font-weight:700;text-shadow:none}
 .tensionBox input{width:100%;margin:.55em 0 .1em;accent-color:#fff;height:22px;touch-action:auto;display:block}
-.tensionBox .note{font-size:clamp(10px,1.7vmin,12px);line-height:1.5;color:var(--ink2);margin-top:.35em;display:block}
+.tensionBox .note,.dripBox .note{font-size:clamp(10px,1.7vmin,12px);line-height:1.5;color:var(--ink2);margin-top:.35em;display:block}
 /* ボーナス開始 */
 .bonusOv{z-index:5;background:rgba(40,70,120,.42);cursor:pointer}
 .bonusCard{animation:bonusPop .5s cubic-bezier(.2,1.5,.4,1) both;background:rgba(70,100,150,.72)}
@@ -149,7 +164,7 @@ body.ramen .bonusOv{background:rgba(90,50,20,.45)}
 body.ramen .card{background:rgba(110,70,38,.68)}
 body.ramen .bonusCard{background:rgba(120,70,30,.78)}
 body.ramen .btn.main,body.ramen .tab.on,body.ramen .chip.on{color:#8a4b1c}
-body.ramen .tabs,body.ramen .tensionBox{background:rgba(60,30,10,.2)}
+body.ramen .tabs,body.ramen .tensionBox,body.ramen .dripBox{background:rgba(60,30,10,.2)}
 .next-drop.naruto{background:conic-gradient(rgba(255,255,255,.95) calc(var(--p,0)*1turn),rgba(255,255,255,.18) 0);opacity:1}
 .next-drop.naruto::after{inset:2px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath fill='%23fff8ef' d='M20 1l3.2 2.6 3.9-1.3 2.4 3.3 4.1.1.9 4 3.9 1.5-.5 4.1 3.3 2.6-1.8 3.7 2 3.6-3.1 2.7.7 4.1-3.8 1.6-.8 4-4.1.2-2.3 3.4-3.9-1.2L20 39l-3.2-2.6-3.9 1.3-2.4-3.3-4.1-.1-.9-4-3.9-1.5.5-4.1L-.1 22l1.8-3.7-2-3.6 3.1-2.7-.7-4.1 3.8-1.6.8-4 4.1-.2 2.3-3.4 3.9 1.2z'/%3E%3Cpath fill='none' stroke='%23ff5f9e' stroke-width='3.4' stroke-linecap='round' d='M20 20c1.5-2 4.6-.6 4 2-.7 3-5.3 3.6-7.5 1.2-2.7-3-1-8 3-9 4.7-1.2 9 2.3 9 7 0 5.300-4.800 9-10 8'/%3E%3C/svg%3E") center/contain no-repeat}
 .next-drop.naruto.none{opacity:.35}
@@ -173,6 +188,24 @@ body.ramen .tabs,body.ramen .tensionBox{background:rgba(60,30,10,.2)}
 </head>
 <body>
 <canvas id="gl"></canvas>
+
+<div id="hashi" aria-hidden="true">
+  <svg class="stick s1" viewBox="0 0 24 700" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="hashiLen" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#2a140c"/><stop offset=".07" stop-color="#4a2115"/><stop offset=".12" stop-color="#6d2f1c"/>
+        <stop offset=".84" stop-color="#7a3520"/><stop offset=".85" stop-color="#d9a441"/><stop offset=".875" stop-color="#d9a441"/>
+        <stop offset=".88" stop-color="#3a1a10"/><stop offset="1" stop-color="#2a130b"/>
+      </linearGradient>
+    </defs>
+    <path d="M9.500 0H14.500L23 700H1z" fill="url(#hashiLen)"/>
+    <path d="M11 6L10 696H6.500L10.200 6z" fill="#fff" opacity=".22"/>
+  </svg>
+  <svg class="stick s2" viewBox="0 0 24 700" preserveAspectRatio="none">
+    <path d="M9.500 0H14.500L23 700H1z" fill="url(#hashiLen)"/>
+    <path d="M11 6L10 696H6.500L10.200 6z" fill="#fff" opacity=".22"/>
+  </svg>
+</div>
 
 <div id="ui" class="off">
   <section id="score" class="glass">
@@ -232,6 +265,7 @@ body.ramen .tabs,body.ramen .tensionBox{background:rgba(60,30,10,.2)}
     </div>
     <p id="modeDesc" class="desc"></p>
     <div class="tensionBox"></div>
+    <div class="dripBox"></div>
     <button id="btnContinue" class="btn main">つづきから</button>
     <button id="btnNew" class="btn">はじめから</button>
     <button id="btnPick" class="btn">レベルを選ぶ</button>
@@ -246,6 +280,7 @@ body.ramen .tabs,body.ramen .tensionBox{background:rgba(60,30,10,.2)}
     <div class="slider"><span>効果音</span><input id="rngSe" type="range" min="0" max="100"></div>
     <div class="slider"><span>環境音</span><input id="rngAmb" type="range" min="0" max="100"></div>
     <div class="tensionBox"></div>
+    <div class="dripBox" data-later="1"></div>
     <button id="btnResume" class="btn main">つづける</button>
     <button id="btnRestart" class="btn">このレベルをやり直す</button>
     <button id="btnPick2" class="btn">レベルを選ぶ</button>
@@ -347,7 +382,7 @@ const lookOf = L => (isRamen() ? SOUPS : THEMES)[themeOf(L)];
 /* ---------- 保存 ---------- */
 const SAVE_KEY = 'oilmerge.save.v1', BOARD_KEY = 'oilmerge.board.v1';
 const save = Object.assign({
-  mode: 'color', tension: 50, tensionMode: 'fixed', modes: {},
+  mode: 'color', tension: 50, tensionMode: 'fixed', drips: true, modes: {},
   merges: 0, vanish: 0, clears: 0, playSec: 0, bestCombo: 0,
   se: 80, amb: 45, charges: 1,
 }, readJSON(SAVE_KEY));
@@ -527,7 +562,7 @@ function simStep() {
   // 外力と移流
   // つかんだ塊: 根元はふくらみ、指に向かって細くなる首の形へ寄せる
   const neck = ptr.grabbing && ptr.tethered && !ptr.over ? neckFrame() : null;
-  const rf = sim.round ? roundFrame() : null;
+  const rf = sim.round ? blobCircles() : null;
   if (neck && ptr.tau > 1) {
     const lim = neck.R * Math.max(1.05, 1.85 - (ptr.tau - 1) * .9);
     if (neck.L > lim) { ptr.x = neck.cx + neck.ux * lim; ptr.y = neck.cy + neck.uy * lim; neck.L = lim; }
@@ -537,14 +572,21 @@ function simStep() {
   }
   for (let i = 0; i < n; i++) {
     if (dying[i]) { vx[i] *= .955; vy[i] *= .955; x[i] += vx[i]; y[i] += vy[i]; px[i] = x[i]; py[i] = y[i]; continue; }
-    if (rf) {
-      // 円の外の粒だけ内へ寄せ、全体を中央へ運ぶ。内側は圧力が広げて自然な円になる
-      const dx = x[i] - rf.x, dy = y[i] - rf.y, d = Math.hypot(dx, dy);
-      if (d > rf.R) { const f = Math.min((d - rf.R) * .002, .24) / d; vx[i] -= dx * f; vy[i] -= dy * f; }
-      vx[i] = (vx[i] + rf.ax) * .985; vy[i] = (vy[i] + rf.ay) * .985;
-    } else {
-      vx[i] += PHYS.swirl * Math.sin(y[i] * .0031 + simT * .23);
-      vy[i] += PHYS.swirl * Math.sin(x[i] * .0027 - simT * .19);
+    vx[i] += PHYS.swirl * Math.sin(y[i] * .0031 + simT * .23);
+    vy[i] += PHYS.swirl * Math.sin(x[i] * .0027 - simT * .19);
+    const rc = rf && rf[col[i]];
+    if (rc) {
+      // 円の外の粒だけ内へ寄せる。内側は圧力が広げて自然な円になる
+      const dx = x[i] - rc.x, dy = y[i] - rc.y, d = Math.hypot(dx, dy);
+      if (sim.round === 1) {
+        if (d > rc.R) { const f = Math.min((d - rc.R) * .002, .24) / d; vx[i] -= dx * f; vy[i] -= dy * f; }
+        vx[i] *= .985; vy[i] *= .985;
+      } else {
+        // 丸くなったあとも止めず、中をゆっくり巡らせて液体のまま揺らす
+        if (d > rc.R) { const f = Math.min((d - rc.R) * .0007, .05) / d; vx[i] -= dx * f; vy[i] -= dy * f; }
+        const st = .011 / rc.R;
+        vx[i] -= dy * st; vy[i] += dx * st;
+      }
     }
     vx[i] *= PHYS.drag; vy[i] *= PHYS.drag;
     if (P.fam[i] === 2) {
@@ -624,18 +666,16 @@ function simStep() {
   }
 }
 
-function blobCircle() {
-  let sx = 0, sy = 0, c = 0;
-  for (let i = 0; i < P.n; i++) if (!P.dying[i]) { sx += P.x[i]; sy += P.y[i]; c++; }
-  if (!c) return null;
-  return { x: sx / c, y: sy / c, n: c, R: Math.sqrt(c * SP_EFF * SP_EFF * .866 / Math.PI) };
-}
-function roundFrame() {
-  const f = blobCircle();
-  if (!f) return null;
-  const d = Math.hypot(f.x, f.y), a = Math.min(d * .0009, .14);
-  f.ax = d > 1 ? -f.x / d * a : 0; f.ay = d > 1 ? -f.y / d * a : 0;
-  return f;
+// 色ごとの塊の重心と、丸くなった時の半径
+function blobCircles() {
+  const out = COLORS.map(() => null);
+  for (let i = 0; i < P.n; i++) {
+    if (P.dying[i]) continue;
+    const c = out[P.col[i]] || (out[P.col[i]] = { col: P.col[i], x: 0, y: 0, n: 0, R: 0 });
+    c.x += P.x[i]; c.y += P.y[i]; c.n++;
+  }
+  for (const c of out) if (c) { c.x /= c.n; c.y /= c.n; c.R = Math.sqrt(c.n * SP_EFF * SP_EFF * .866 / Math.PI); }
+  return out;
 }
 
 function neckFrame() {
@@ -786,10 +826,24 @@ function track() {
 /* ---------- ビーズ(小さなしずく)と光の粒・波紋 ---------- */
 const beads = [];
 const BEAD_MAX = 90;
-const beadTarget = () => isRamen() ? 85 : 44;
-function spawnBead(fade = true) {
-  const a = rand(TAU), r = Math.sqrt(Math.random()) * (INNER - 30), ramen = isRamen();
-  beads.push({ x: Math.cos(a) * r, y: Math.sin(a) * r, c: ramen ? 0 : rand(COLORS.length) | 0, r: ramen ? rand(5, 20) : rand(7, 18), w: fade ? 0 : 1, ph: rand(TAU), vx: 0, vy: 0 });
+const beadDecor = () => isRamen() ? 85 : 44;
+function spawnBead(fade = true, avoid = false) {
+  const pool = Game.colorsLeft.length ? Game.colorsLeft : Game.palette;
+  if (!pool.length) return;
+  const ramen = isRamen(), c = pool[rand(pool.length) | 0];
+  let x = 0, y = 0, best = -1;
+  for (let k = 0; k < (avoid ? 12 : 1); k++) {
+    const a = rand(TAU), r = Math.sqrt(Math.random()) * (INNER - 30), cx = Math.cos(a) * r, cy = Math.sin(a) * r;
+    let m = 1e12;
+    if (avoid) for (let i = 0; i < P.n; i += 2) {
+      if (P.col[i] !== c) continue;
+      m = Math.min(m, (P.x[i] - cx) * (P.x[i] - cx) + (P.y[i] - cy) * (P.y[i] - cy));
+    }
+    if (m > best) { best = m; x = cx; y = cy; }
+  }
+  // 取り込む対象のときは、見つけやすい大きさにする
+  const target = !Game.dripsOn;
+  beads.push({ x, y, c, r: target ? rand(11, 20) : ramen ? rand(5, 20) : rand(7, 18), w: fade ? 0 : 1, ph: rand(TAU), vx: 0, vy: 0 });
 }
 function updateBeads(dt) {
   for (let b = beads.length - 1; b >= 0; b--) {
@@ -810,8 +864,8 @@ function updateBeads(dt) {
       }
     }
     if (hit >= 0 && nearest < 62 * 62) {
-      // 指で動かしている同じ色にだけ取り込まれる。それ以外は押しのけられる
-      if (P.col[hit] === d.c && P.fam[hit] === 1 && Game.playing()) { Game.onBead(d); beads.splice(b, 1); continue; }
+      // 通常は指で動かしている同じ色にだけ取り込まれる。追加なしでは触れた同じ色へ入る
+      if (P.col[hit] === d.c && (P.fam[hit] === 1 || !Game.dripsOn) && Game.playing()) { Game.onBead(d, hit); beads.splice(b, 1); continue; }
       const m = Math.sqrt(nearest) || 1;
       d.vx += nx / m * .9; d.vy += ny / m * .9;
     }
@@ -819,7 +873,8 @@ function updateBeads(dt) {
     const rr = Math.hypot(d.x, d.y);
     if (rr > INNER - 12) { d.x *= (INNER - 12) / rr; d.y *= (INNER - 12) / rr; }
   }
-  if (beads.length < beadTarget() && Math.random() < dt * 1.2) spawnBead();
+  // 飾りの粒は補充する。追加なしでは減った分は戻さない
+  if ((Game.state === 'title' || (Game.dripsOn && Game.playing())) && beads.length < beadDecor() && Math.random() < dt * 1.2) spawnBead();
 }
 
 const sparks = [];
@@ -1121,7 +1176,7 @@ vec3 waterAt(vec2 w){
   vec2 g=w*.042,id=floor(g),f=fract(g)-.5;
   float h=hash(id);
   float d=length(f-(vec2(h,hash(id+7.3))-.5)*.7);
-  c+=uGlint*.08*smoothstep(.17,.08,d)*step(.66,hash(id+3.1));
+  c+=uGlint*.025*smoothstep(.17,.08,d)*step(.66,hash(id+3.1));
   c*=1.+caustic(w*.004,uT*.5)*.07;
   return c;
 }`;
@@ -1283,7 +1338,7 @@ void main(){
 const fsBlob = (chunk, shade) => `#version 300 es
 precision highp float;
 in vec2 vW; out vec4 o;
-uniform sampler2D uFA,uFB; uniform float uGain; uniform vec3 uCol[6]; uniform float uFlash[6]; uniform vec4 uRound;
+uniform sampler2D uFA,uFB; uniform float uGain; uniform vec3 uCol[6]; uniform float uFlash[6]; uniform vec4 uRound[6];
 ${chunk}
 int idx; vec4 mA,mB;
 float F(vec2 uv){ return (idx<4?dot(texture(uFA,uv),mA):dot(texture(uFB,uv),mB))/uGain; }
@@ -1299,15 +1354,18 @@ void main(){
   mA=vec4(idx==0,idx==1,idx==2,idx==3); mB=vec4(idx==4,idx==5,0.,0.);
   float f=best/uGain;
   // 完成の瞬間は、粒の並びが輪郭に出ないよう真円の場へ移す
-  vec2 rq=vW-uRound.xy; float rd=length(rq); vec2 rdir=rq/max(rd,1.);
-  f=mix(f,clamp(ISO+(uRound.z-rd)*.018,0.,3.4),uRound.w);
+  vec4 rnd=uRound[idx];
+  vec2 rq=vW-rnd.xy; float rd=length(rq); vec2 rdir=rq/max(rd,1.);
+  float rang=atan(rq.y,rq.x);
+  float rrad=rnd.z*(1.+.012*sin(rang*3.+uT*1.1)+.007*sin(rang*5.-uT*1.7));
+  f=mix(f,clamp(ISO+(rrad-rd)*.018,0.,3.4),rnd.w);
   float aa=max(fwidth(f),.004);
   float m=smoothstep(ISO-aa,ISO+aa,f);
   if(m<=.002)discard;
   // 縁の細かい法線
   float e=2.5/1024.;
   vec2 grad=vec2(F(uv+vec2(e,0.))-F(uv-vec2(e,0.)),F(uv+vec2(0.,e))-F(uv-vec2(0.,e)))/(2.*e*W);
-  grad=mix(grad,-rdir*.018,uRound.w);
+  grad=mix(grad,-rdir*.018,rnd.w);
   float t=max(f-ISO,0.);
   float H0=1.-exp(-t*1.25);
   // ぼかした場から作る大きなドーム
@@ -1315,9 +1373,9 @@ void main(){
   vec2 gw=vec2(FL(uv+vec2(E,0.),LD)-FL(uv-vec2(E,0.),LD),FL(uv+vec2(0.,E),LD)-FL(uv-vec2(0.,E),LD))/(2.*E*W);
   float wide=FL(uv,LD);
   float dome=smoothstep(.4,2.6,wide);
-  float rn=clamp(rd/max(uRound.z,1.),0.,1.);
-  gw=mix(gw,-rdir*.034*rn*rn,uRound.w);
-  dome=mix(dome,1.-rn*rn,uRound.w);
+  float rn=clamp(rd/max(rrad,1.),0.,1.);
+  gw=mix(gw,-rdir*.034*rn*rn,rnd.w);
+  dome=mix(dome,1.-rn*rn,rnd.w);
   vec3 Nw=normalize(vec3(-gw*30.,1.));
   vec3 N=normalize(vec3(-grad*exp(-t*1.25)*1.25*17.-gw*22.,1.));
   vec3 col=uCol[idx];
@@ -1487,6 +1545,7 @@ function initGL() {
     empty: gl.createVertexArray(),
     pv: mkVao(16, [[0, 4, 0]]), bv: mkVao(16, [[0, 4, 0]]), sv: mkVao(28, [[0, 4, 0], [1, 3, 16]]),
     pData: new Float32Array(MAX_P * 4), bData: new Float32Array(BEAD_MAX * 4), gData: new Float32Array(240 * 4), sData: new Float32Array(420 * 7),
+    round: new Float32Array(COLORS.length * 4),
     colors: new Float32Array(COLORS.flatMap(c => c.rgb)), oilColors: new Float32Array(COLORS.length * 3),
   };
   resize();
@@ -1581,7 +1640,7 @@ function render(t) {
   if (m) {
     gl.useProgram(R.bead.pr); setCommon(R.bead);
     gl.uniform3fv(R.bead.u.uCol, pal);
-    gl.uniform1f(R.bead.u.uAlpha, ramen ? .62 : 1);
+    gl.uniform1f(R.bead.u.uAlpha, ramen && Game.dripsOn ? .62 : 1);
     gl.bindVertexArray(R.bv.vao); gl.bindBuffer(gl.ARRAY_BUFFER, R.bv.buf);
     gl.bufferData(gl.ARRAY_BUFFER, R.bData.subarray(0, m), gl.DYNAMIC_DRAW);
     gl.drawArrays(gl.POINTS, 0, m / 4);
@@ -1591,12 +1650,16 @@ function render(t) {
   gl.useProgram(blobP.pr); setCommon(blobP); setWater(blobP, t); bindFields(blobP);
   gl.uniform3fv(blobP.u.uCol, pal);
   gl.uniform1fv(blobP.u.uFlash, Game.flash);
-  const rc = Game.roundAmt > 0 ? blobCircle() : null;
-  if (rc) {
+  R.round.fill(0);
+  if (Game.roundAmt > 0) {
     // ぷるんと弾んでから静まる
     const e = t - Game.maruClock, wob = 1 + .045 * Math.exp(-e * 4.2) * Math.sin(e * 15);
-    gl.uniform4f(blobP.u.uRound, rc.x, rc.y, (rc.R * 1.06 + 24) * wob, Game.roundAmt);
-  } else gl.uniform4f(blobP.u.uRound, 0, 0, 0, 0);
+    for (const c of blobCircles()) {
+      if (!c) continue;
+      R.round.set([c.x, c.y, (c.R * 1.06 + 24) * wob, Game.roundAmt], c.col * 4);
+    }
+  }
+  gl.uniform4fv(blobP.u.uRound, R.round);
   gl.bindVertexArray(R.empty); gl.drawArrays(gl.TRIANGLES, 0, 3);
 
   // ジェルの中の小さな泡
@@ -1640,14 +1703,15 @@ const Game = {
   combo: 0, comboT: 0, chain: 0, chainT: 0, vanishedThisLevel: 0, mergedThisLevel: 0,
   next: -1, dripIn: 0, dripEvery: 0, dripPause: 0, dripSpot: null, dripSize: 12,
   meter: 0, peak: 0, overT: 0, warned: false,
-  roundAmt: 0, roundShow: false, maruClock: 0,
+  roundAmt: 0, roundShow: false, maruClock: 0, toastPlace: 'low',
+  dripsOn: true, palette: [], doneCols: [], allHold: 0, leftMax: 1,
   bonusTime: 0, bonusTotal: 20, bonusTarget: 20, pieces: 0, stroke: null,
   q: [], startScore: 0, beat: 0, newBest: false,
 
   playing() { return this.state === 'play'; },
   after(sec, fn) { this.q.push({ at: this.t + sec, fn }); },
 
-  warnGlow(t) { return this.meter >= .85 && !this.bonus && this.state === 'play' ? (Math.sin(t * 3.2) * .5 + .5) * clamp((this.meter - .85) / .15, 0, 1) : 0; },
+  warnGlow(t) { return this.meter >= .85 && !this.bonus && this.dripsOn && this.state === 'play' ? (Math.sin(t * 3.2) * .5 + .5) * clamp((this.meter - .85) / .15, 0, 1) : 0; },
 
   /* ---- レベル構成 ---- */
   config(L) {
@@ -1704,7 +1768,9 @@ const Game = {
     this.saveBoard();
   },
 
-  setup(L) {
+  setup(L, drips = save.drips) {
+    this.dripsOn = drips;
+    this.doneCols = []; this.allHold = 0; this.leftMax = 1;
     clearParticles();
     this.q = []; this.t = 0; this.levelTime = 0; this.flash.fill(0);
     this.popHold.fill(0);
@@ -1722,6 +1788,7 @@ const Game = {
       this.bonusTotal = this.bonusTime = cfg.time; this.bonusTarget = cfg.target; this.pieces = cfg.blobs;
       this.colorsLeft = []; this.next = -1; this.dripEvery = 0;
       const picks = isRamen() ? [0, 0] : shuffle(COLORS.map((_, i) => i)).slice(0, cfg.blobs);
+      this.palette = [...new Set(picks)];
       const dist = cfg.blobs === 4 ? 460 : 400, base = rand(TAU);
       picks.forEach((c, i) => {
         const a = base + i * TAU / cfg.blobs;
@@ -1732,6 +1799,7 @@ const Game = {
       const ramen = isRamen();
       const colors = ramen ? [0] : shuffle(COLORS.map((_, i) => i)).slice(0, cfg.colors);
       this.colorsLeft = colors.slice();
+      this.palette = colors.slice();
       const total = capOf() * cfg.fill, plan = [];
       for (const c of colors) {
         const share = total / colors.length;
@@ -1759,11 +1827,13 @@ const Game = {
         spawnBlob(best.x, best.y, d.n, d.c, delay, !ramen);
         if (idx < 8) this.dropSound(delay, best.x / DISH);
       });
-      this.dripEvery = cfg.dripEvery; this.dripSize = cfg.dripSize;
-      this.dripIn = cfg.dripEvery ? cfg.dripEvery + 3 : 0;
-      this.next = cfg.dripEvery ? this.pickNext() : -1;
+      this.dripEvery = drips ? cfg.dripEvery : 0; this.dripSize = cfg.dripSize;
+      this.dripIn = this.dripEvery ? this.dripEvery + 3 : 0;
+      this.next = this.dripEvery ? this.pickNext() : -1;
     }
-    while (beads.length < beadTarget()) spawnBead(false);
+    beads.length = 0;
+    const goal = drips ? beadDecor() : cfg.bonus ? 0 : isRamen() ? 8 + Math.min(L * 2, 22) : this.colorsLeft.length * (2 + Math.min(L / 3 | 0, 3));
+    while (beads.length < goal) spawnBead(false, !drips);
   },
   dropSound(delay, pan) { this.after(delay + .02, () => { ripple(pan * 500, 0, .25); Snd.drip(pan); }); },
   pickNext() { return this.colorsLeft.length ? this.colorsLeft[rand(this.colorsLeft.length) | 0] : -1; },
@@ -1785,21 +1855,41 @@ const Game = {
       this.pieces = blobList.length;
       return;
     }
+    if (isRamen() || !this.dripsOn) { this.checkAllDone(); return; }
     for (let i = this.colorsLeft.length - 1; i >= 0; i--) {
       const col = this.colorsLeft[i], s = colorStat[col];
       if (s.n === 0 && !s.pending) { this.colorsLeft.splice(i, 1); continue; }
       if (s.big === 1 && !s.pending && (!this.dripSpot || this.next !== col)) {
         this.popHold[col] += 1 / 15;
         this.flash[col] = Math.max(this.flash[col], this.popHold[col] * 1.1);
-        if (isRamen()) {
-          if (this.popHold[col] >= .2) { this.colorsLeft.splice(i, 1); this.beginRound(col); return; }
-        } else if (this.popHold[col] >= .36) { this.popColor(col); this.colorsLeft.splice(i, 1); }
+        if (this.popHold[col] >= .36) { this.popColor(col); this.colorsLeft.splice(i, 1); }
       } else this.popHold[col] = 0;
     }
     if (!this.colorsLeft.length && this.state === 'play') this.levelDone();
     else if (this.next >= 0 && !this.colorsLeft.includes(this.next)) { this.next = this.pickNext(); this.syncNext(); }
   },
-
+  // 全色がひとつになるまで待つ。そろった色には印だけ出す
+  checkAllDone() {
+    let all = true;
+    for (const col of this.colorsLeft) {
+      const s = colorStat[col];
+      const beadsLeft = !this.dripsOn && beads.some(b => b.c === col);
+      const whole = s.big === 1 && !s.pending && !beadsLeft && !(this.dripSpot && this.next === col);
+      if (!whole) { all = false; continue; }
+      if (!this.doneCols.includes(col) && this.colorsLeft.length > 1) {
+        this.doneCols.push(col);
+        this.flash[col] = .8;
+        this.bumpCombo();
+        this.addScore(120 * this.mult() * this.levelMult(), s.sx / s.n, s.sy / s.n, col, 'そろった！');
+        Snd.pluck(Snd.note(Snd.step + 4), .22, 0, 1.4);
+        ripple(s.sx / s.n, s.sy / s.n, .8);
+      }
+    }
+    if (!all) { this.allHold = 0; return; }
+    this.allHold += 1 / 15;
+    for (const col of this.colorsLeft) this.flash[col] = Math.max(this.flash[col], this.allHold * 1.1);
+    if (this.allHold >= .2) this.beginRound();
+  },
   onMerge(m) {
     const c = m.c, x = c.cx !== null ? c.cx : c.sx / c.n, y = c.cy !== null ? c.cy : c.sy / c.n, pan = x / DISH;
     const col = c.col;
@@ -1838,6 +1928,7 @@ const Game = {
       P.vx[i] = dx / d * s + rand(-1, 1); P.vy[i] = dy / d * s + rand(-1, 1);
     }
     pairsOK = false;
+    for (let b = beads.length - 1; b >= 0; b--) if (beads[b].c === col) { burst(beads[b].x, beads[b].y, col, 3, 3, .5); beads.splice(b, 1); }
     if (ptr.grabbing) { let any = false; for (let i = 0; i < P.n; i++) if (P.grab[i]) { any = true; break; } if (!any) releaseGrab(false); }
     this.chain = this.chainT > 0 ? this.chain + 1 : 0;
     this.chainT = 7;
@@ -1854,10 +1945,12 @@ const Game = {
     if (this.level >= 1 && this.chain >= 1) burst(cx, cy, -1, 30, 22, 1.1);
   },
 
-  onBead(d) {
+  onBead(d, hit) {
+    const held = P.fam[hit] === 1, blob = P.blob[hit];
     burst(d.x, d.y, d.c, 4, 3.4, .55);
-    this.score += 4; this.touchBest();
     Snd.bead(d.x / DISH);
+    if (!this.dripsOn) addParticle(d.x, d.y, d.c, blob, 1);   // 消えずに塊の一部になる
+    if (held) { this.score += 4; this.touchBest(); }
   },
 
   addScore(v, x, y, col, extra, big) {
@@ -1969,66 +2062,84 @@ const Game = {
   },
 
   /* ---- 終わり方 ---- */
-  // ラーメンの完成: 中央で丸くなるのを見せてから次へ進む
-  beginRound(col) {
+  // 全部そろったら、その場で丸くなるのを見せてから次へ進む
+  beginRound() {
     this.state = 'clearing';
     releaseGrab(false);
-    this.rounding = true; this.roundT = 0; this.roundCol = col;
-    sim.round = true; sim.boost = 1;
+    this.colorsLeft = [];
+    this.rounding = true; this.roundT = 0;
+    sim.round = 1; sim.boost = 1;
     Snd.gather();
   },
   updateRound(dt) {
     this.roundT += dt;
-    this.flash[this.roundCol] = Math.max(this.flash[this.roundCol], Math.min(this.roundT * .35, .35));
-    const c = blobCircle();
-    if (!c) { this.rounding = false; this.levelDone(); return; }
-    let far = 0;
+    const cs = blobCircles(), live = cs.filter(Boolean);
+    if (!live.length) { this.rounding = false; this.levelDone(); return; }
+    const far = COLORS.map(() => 0);
     for (let i = 0; i < P.n; i++) {
       if (P.dying[i]) continue;
-      far = Math.max(far, Math.hypot(P.x[i] - c.x, P.y[i] - c.y));
+      const c = cs[P.col[i]];
+      far[P.col[i]] = Math.max(far[P.col[i]], Math.hypot(P.x[i] - c.x, P.y[i] - c.y));
     }
-    if ((this.roundT > .5 && far <= c.R * ROUND_FIT) || this.roundT >= 1.8) this.roundDone(c);
+    let ok = this.roundT > .5;
+    for (const c of live) {
+      this.flash[c.col] = Math.max(this.flash[c.col], Math.min(this.roundT * .35, .35));
+      if (far[c.col] > c.R * ROUND_FIT) ok = false;
+    }
+    if (ok || this.roundT >= 1.8) this.roundDone(live);
   },
-  roundDone(c) {
+  roundDone(cs) {
     this.rounding = false;
-    const col = this.roundCol;
+    sim.round = 2;
     this.roundShow = true; this.maruClock = performance.now() / 1000;
-    const pts = (420 + Math.min(c.n, 300) * 7) * this.mult() * this.levelMult();
-    this.addScore(pts, c.x, c.y - c.R - 60, col, 'まんまる！', true);
-    save.vanish++; this.vanishedThisLevel++;
-    this.flash[col] = 1;
-    Snd.maru();
-    vibrate(35);
-    ripple(c.x, c.y, 2);
-    const edge = c.R + 34;
-    for (let k = 0; k < 44; k++) {
-      const a = k / 44 * TAU;
-      burst(c.x + Math.cos(a) * edge, c.y + Math.sin(a) * edge, col, 1, 7, 1.1);
+    let total = 0;
+    cs.forEach((c, i) => {
+      const pts = (420 + Math.min(c.n, 300) * 7) * this.mult() * this.levelMult() * (1 + i * .2);
+      total += Math.round(pts / 5) * 5;
+      this.after(i * .13, () => {
+        this.addScore(pts, c.x, c.y - c.R - 60, c.col, 'まんまる！', true);
+        this.flash[c.col] = 1;
+        if (i === 0) Snd.maru();
+        else { Snd.pluck(Snd.note(i * 2), .2, c.x / DISH, 1.4); Snd.plop(130, 320, .2, .26, c.x / DISH); }
+        vibrate(25);
+        ripple(c.x, c.y, 1.8);
+        const edge = c.R + 34;
+        for (let k = 0; k < 40; k++) {
+          const a = k / 40 * TAU;
+          burst(c.x + Math.cos(a) * edge, c.y + Math.sin(a) * edge, c.col, 1, 7, 1.1);
+        }
+      });
+    });
+    save.vanish += cs.length; this.vanishedThisLevel += cs.length;
+    let bestGap = -Infinity;
+    for (const [place, y] of [['low', 560], ['high', -560], ['', 0]]) {
+      let gap = Infinity;
+      for (const c of cs) gap = Math.min(gap, Math.hypot(c.x * .6, c.y - y) - c.R);
+      if (gap > bestGap) { bestGap = gap; this.toastPlace = place; }
     }
-    this.levelDone(Math.round(pts / 5) * 5);
+    this.levelDone(total, (cs.length - 1) * .13);
   },
   dissolveRound() {
-    const c = blobCircle();
+    const cs = blobCircles();
     sim.round = false; sim.boost = 0; this.roundShow = false;
-    if (!c) return;
     for (let i = 0; i < P.n; i++) {
       if (P.dying[i]) continue;
+      const c = cs[P.col[i]];
       P.dying[i] = 1;
       const dx = P.x[i] - c.x, dy = P.y[i] - c.y, s = rand(1.5, 4) / (c.R + 1);
       P.vx[i] = dx * s; P.vy[i] = dy * s;
     }
     pairsOK = false;
-    burst(c.x, c.y, this.roundCol, 26, 9, 1);
-    ripple(c.x, c.y, .9);
+    cs.forEach(c => { if (c) { burst(c.x, c.y, c.col, 22, 9, 1); ripple(c.x, c.y, .9); } });
     Snd.plop(420, 900, .12, .16);
   },
-  levelDone(maruPts = 0) {
+  levelDone(maruPts = 0, extraDelay = 0) {
     this.state = 'clearing';
     releaseGrab(false);
     const clearBonus = Math.round((180 + this.level * 70) / 5) * 5;
     const calm = Math.round(clamp(1 - this.peak, 0, 1) * 500 * this.levelMult() / 5) * 5;
     this.score += clearBonus + calm; this.touchBest();
-    this.after(maruPts ? .5 : .7, () => {
+    this.after(maruPts ? .5 + extraDelay : .7, () => {
       if (!maruPts) {
         Snd.clear();
         burst(0, 0, -1, 70, 20, 1.3);
@@ -2049,7 +2160,7 @@ const Game = {
     this.syncCharges();
     const changed = themeOf(nextL) !== themeOf(L);
     const nextLook = isRamen() ? `つぎのスープ: ${lookOf(nextL).name}` : `つぎの水面: ${lookOf(nextL).name}`;
-    showToast(`LEVEL ${L} クリア`, lines.map(s => `<p>${s}</p>`).join('') + `<p class="sum">+${fmt(sum)}</p>` + (changed ? `<p>${nextLook}</p>` : ''), 2600, maru);
+    showToast(`LEVEL ${L} クリア`, lines.map(s => `<p>${s}</p>`).join('') + `<p class="sum">+${fmt(sum)}</p>` + (changed ? `<p>${nextLook}</p>` : ''), 2600, maru ? this.toastPlace : '');
     if (maru) this.after(2.25, () => this.dissolveRound());
     this.after(2.9, () => { this.newBest = false; $('best').classList.remove('new'); this.start(nextL, true); });
   },
@@ -2068,7 +2179,7 @@ const Game = {
   /* ---- 毎フレーム ---- */
   update(dt) {
     for (let i = 0; i < COLORS.length; i++) this.flash[i] *= Math.pow(.02, dt);
-    this.roundAmt = this.roundShow ? Math.min(1, this.roundAmt + dt * 6) : Math.max(0, this.roundAmt - dt * 7);
+    this.roundAmt = this.roundShow ? Math.min(.72, this.roundAmt + dt * 5) : Math.max(0, this.roundAmt - dt * 7);
     updateTheme(dt);
     if (this.state !== 'play' && this.state !== 'clearing' && this.state !== 'intro') return;
     this.t += dt;
@@ -2091,6 +2202,7 @@ const Game = {
     if (this.beat > 3) { this.beat = 0; this.saveBoard(); }
   },
   updateDrip(dt) {
+    if (!this.dripsOn) return;
     // 水位がしきい値を超えた
     if (this.meter >= 1) {
       if (this.dripPause > 0) { this.dripPause -= dt; return; }
@@ -2132,10 +2244,10 @@ const Game = {
     const showHints = this.level <= 2 && !this.bonus;
     $('hints').classList.toggle('gone', !showHints);
     $('statusStar').style.display = this.bonus ? '' : 'none';
-    const ramen = isRamen();
-    $('statusTtl').textContent = this.bonus ? 'BONUS' : ramen ? '油の量' : '水位';
-    $('statusMsg').textContent = this.bonus ? (ramen ? '大きな油を細かく分けよう！' : '大きな色を細かく分けよう！') : ramen ? 'あふれる前に、ひとつに' : '色を消すと下がるよ';
-    $('goalText').innerHTML = this.bonus ? 'すばやくなぞって<br>切り分けよう！' : ramen ? '油をぜんぶつなげて<br>ひとつにしよう！' : '同じ色をすべてつなげて<br>消そう！';
+    const ramen = isRamen(), off = !this.dripsOn;
+    $('statusTtl').textContent = this.bonus ? 'BONUS' : off ? 'のこり' : ramen ? '油の量' : '水位';
+    $('statusMsg').textContent = this.bonus ? (ramen ? '大きな油を細かく分けよう！' : '大きな色を細かく分けよう！') : off ? '小さな粒もぜんぶ取り込もう' : ramen ? 'あふれる前に、ひとつに' : '色を消すと下がるよ';
+    $('goalText').innerHTML = this.bonus ? 'すばやくなぞって<br>切り分けよう！' : ramen ? '油をぜんぶつなげて<br>ひとつにしよう！' : off ? '色ごとにひとつにまとめて<br>全部そろえよう！' : '同じ色をすべてつなげて<br>消そう！';
     resize();
   },
   syncNext() {
@@ -2161,6 +2273,12 @@ const Game = {
       $('statusBar').style.width = clamp(this.pieces / this.bonusTarget, 0, 1) * 100 + '%';
       $('statusVal').textContent = `${this.pieces} / ${this.bonusTarget}`;
       st.classList.remove('warn');
+    } else if (!this.dripsOn) {
+      const left = Math.max(0, blobList.length - this.colorsLeft.length) + beads.length;
+      if (this.state === 'play') this.leftMax = Math.max(this.leftMax, left);
+      $('statusBar').style.width = (this.colorsLeft.length ? 1 - left / this.leftMax : 1) * 100 + '%';
+      $('statusVal').textContent = this.colorsLeft.length ? `あと ${left}` : 'そろった！';
+      st.classList.remove('warn');
     } else {
       $('statusBar').style.width = clamp(this.meter, 0, 1) * 100 + '%';
       const left = this.meter >= 1 && save.charges <= 0 ? ` あと${Math.ceil(OVER_GRACE - this.overT)}秒` : '';
@@ -2182,14 +2300,17 @@ const Game = {
     writeJSON(boardKey(), {
       level: this.level, d, nextBlob, t: Math.round(this.levelTime), left: this.colorsLeft, lin: [...lineage.keys()].map(id => [id, linRoot(id)]),
       next: this.next, dripIn: this.dripIn, peak: this.peak, bonusTime: this.bonusTime, pieces: this.pieces,
-      startScore: this.startScore, combo: 0,
+      startScore: this.startScore, combo: 0, drips: this.dripsOn, doneCols: this.doneCols,
+      beads: this.dripsOn ? null : beads.map(d => [Math.round(d.x), Math.round(d.y), d.c, Math.round(d.r)]),
     });
   },
   resume() {
     const b = readJSON(boardKey());
     if (!b.d || b.level !== ms().level || !b.d.length) { this.start(ms().level, false); return; }
+    // タイトルで「追加」の設定を変えたら、そのレベルを新しい設定で始め直す
+    if ((b.drips !== false) !== save.drips) { clearBoard(); this.start(ms().level, false); return; }
     this.score = this.shownScore = ms().score; this.level = b.level; this.startScore = b.startScore || ms().score;
-    this.setup(b.level);          // 構成値を入れ直してから盤面を置き換える
+    this.setup(b.level, b.drips !== false);          // 構成値を入れ直してから盤面を置き換える
     clearParticles();
     this.q = [];
     for (let k = 0; k < b.d.length; k += 4) addParticle(b.d[k], b.d[k + 1], b.d[k + 2], b.d[k + 3], 1);
@@ -2199,6 +2320,11 @@ const Game = {
     this.peak = b.peak || 0;
     if (this.bonus) { this.bonusTime = b.bonusTime > 0 ? b.bonusTime : this.bonusTotal; this.pieces = b.pieces || 0; }
     else { this.colorsLeft = b.left || this.colorsLeft; this.next = b.next ?? this.next; this.dripIn = b.dripIn ?? this.dripIn; }
+    this.doneCols = b.doneCols || [];
+    if (b.beads) {
+      beads.length = 0;
+      for (const [x, y, c, r] of b.beads) beads.push({ x, y, c, r, w: 1, ph: rand(TAU), vx: 0, vy: 0 });
+    }
     this.state = 'play';
     this.syncAll();
     showOverlay(null);
@@ -2357,9 +2483,10 @@ function floatText(text, x, y, col, big) {
   document.body.appendChild(el);
 }
 let toastTimer = 0;
-function showToast(title, html, ms, low = false) {
+function showToast(title, html, ms, place = '') {
   $('toastTtl').textContent = title; $('toastBody').innerHTML = html;
-  $('toast').classList.toggle('low', low);
+  $('toast').classList.toggle('low', place === 'low');
+  $('toast').classList.toggle('high', place === 'high');
   $('toast').classList.add('on');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => $('toast').classList.remove('on'), ms);
@@ -2380,6 +2507,7 @@ function refreshTitle() {
   $('tabRamen').classList.toggle('on', ramen);
   $('modeDesc').innerHTML = ramen ? 'スープに浮かぶ油を、ひとつにまとめる。<br>醤油、塩、味噌、豚骨とスープが変わります。' : 'カラフルなしずくを、色ごとにつなげて消す。<br>同じ色がすべてつながると、はじけます。';
   syncTension();
+  syncDrips();
 }
 function setMode(m) {
   if (save.mode === m) return;
@@ -2417,6 +2545,25 @@ function mountTension(box) {
     tensionChanged();
   });
 }
+function mountDrips(box) {
+  box.innerHTML = `<span class="ttl">しずくの追加</span>
+    <div class="chips"><button class="chip" data-d="1">あり</button><button class="chip" data-d="0">なし</button></div>
+    <span class="note"></span>`;
+  box.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+    Snd.init(); Snd.ui();
+    save.drips = c.dataset.d === '1';
+    persist(); syncDrips();
+  }));
+}
+function syncDrips() {
+  document.querySelectorAll('.dripBox').forEach(box => {
+    box.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', (c.dataset.d === '1') === save.drips));
+    const later = box.dataset.later && Game.dripsOn !== save.drips ? ' つぎのレベルから変わります。' : '';
+    box.querySelector('.note').textContent = (save.drips
+      ? 'ときどきしずくが落ちてきます。あふれるとゲームオーバーです。'
+      : 'ゲームオーバーなし。小さな粒も取り込み、全部そろうまで消えません。') + later;
+  });
+}
 function tensionChanged() { applyTension(); persist(); syncTension(); }
 function syncTension() {
   const by = save.tensionMode === 'byColor';
@@ -2436,6 +2583,7 @@ function pause() {
   pointerEndAll();
   $('pauseStats').innerHTML = statsHtml();
   syncTension();
+  syncDrips();
   showOverlay('ovPause');
   Game.saveBoard();
   persist();
@@ -2484,11 +2632,14 @@ function demoBoard() {
     const a = i * TAU / spots + rand(-.2, .2), r = rand(380, ramen ? 800 : 640);
     spawnBlob(Math.cos(a) * r, Math.sin(a) * r, ramen ? rand(9, 30) | 0 : rand(30, 90) | 0, cols[i % cols.length], i * .1, !ramen);
   }
-  while (beads.length < beadTarget()) spawnBead(false);
+  Game.colorsLeft = []; Game.palette = cols.slice(0, spots); Game.dripsOn = true;
+  beads.length = 0;
+  while (beads.length < beadDecor()) spawnBead(false);
 }
 
 const uiClick = (id, fn) => $(id).addEventListener('click', () => { Snd.init(); Snd.ui(); fn(); });
 document.querySelectorAll('.tensionBox').forEach(mountTension);
+document.querySelectorAll('.dripBox').forEach(mountDrips);
 uiClick('tabColor', () => setMode('color'));
 uiClick('tabRamen', () => setMode('ramen'));
 $('ovBonus').addEventListener('click', () => { Snd.init(); Game.beginBonus(); });
@@ -2508,6 +2659,23 @@ $('rngSe').value = save.se; $('rngAmb').value = save.amb;
 $('rngSe').addEventListener('input', e => { save.se = +e.target.value; Snd.applyVolumes(); persist(); });
 $('rngSe').addEventListener('change', () => Snd.plop(480, 1100, .1, .22));
 $('rngAmb').addEventListener('input', e => { save.amb = +e.target.value; Snd.applyVolumes(); persist(); });
+
+/* ---------- 箸(見た目のみ) ---------- */
+const hashi = { x: 0, y: 0, mouse: false, seen: false, rip: 0 };
+window.addEventListener('pointermove', e => { hashi.x = e.clientX; hashi.y = e.clientY; hashi.mouse = e.pointerType === 'mouse'; hashi.seen = true; }, { passive: true });
+window.addEventListener('pointerdown', e => { hashi.x = e.clientX; hashi.y = e.clientY; hashi.mouse = e.pointerType === 'mouse'; hashi.seen = true; }, { capture: true, passive: true });
+function syncHashi() {
+  const el = $('hashi');
+  const inGame = Game.state === 'play' || Game.state === 'clearing';
+  const show = isRamen() && inGame && hashi.seen && (ptr.down || hashi.mouse);
+  el.classList.toggle('on', show);
+  el.classList.toggle('down', ptr.down);
+  canvas.classList.toggle('hashiCursor', isRamen() && inGame && hashi.mouse);
+  if (!show) return;
+  el.style.transform = `translate(${hashi.x}px,${hashi.y}px)`;
+  // 箸先がスープを動かすさざなみ
+  if (ptr.down && ptr.moved - hashi.rip > 170) { hashi.rip = ptr.moved; ripple(ptr.x, ptr.y, .22); }
+}
 
 /* ---------- ループ ---------- */
 let lastT = performance.now(), acc = 0, trackAcc = 0, frameAvg = 16, frameN = 0, stretchT = 0;
@@ -2533,6 +2701,7 @@ function frame(now) {
   }
   Game.update(dt);
   if (Game.state !== 'title') Game.syncHud(dt);
+  syncHashi();
   render(now / 1000);
   // 重い端末では解像度を自動で下げる
   frameAvg = lerp(frameAvg, raw, .05);
@@ -2562,7 +2731,7 @@ function boot() {
 }
 boot();
 // 動作確認用
-window.__oilmerge = { spawnBlob, Game, P, ptr, save, sim, tau, linkOf, ms, setMode, beads, PHYS, Snd, colorStat, simStep, track, reap, toCss, view, get blobList() { return blobList; }, get np() { return np; } };
+window.__oilmerge = { spawnBlob, blobCircles, Game, P, ptr, save, sim, tau, linkOf, ms, setMode, beads, PHYS, Snd, colorStat, simStep, track, reap, toCss, view, get blobList() { return blobList; }, get np() { return np; } };
 </script>
 </body>
 </html>
