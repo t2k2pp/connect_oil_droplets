@@ -87,6 +87,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 @keyframes rise{0%{opacity:0;transform:translate(-50%,-30%) scale(.7)}18%{opacity:1;transform:translate(-50%,-60%) scale(1.06)}100%{opacity:0;transform:translate(-50%,-190%) scale(1)}}
 #toast{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.92);padding:clamp(14px,2.6vmin,26px) clamp(24px,5vmin,48px);text-align:center;opacity:0;transition:opacity .4s,transform .4s;pointer-events:none;min-width:min(78vw,300px)}
 #toast.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+#toast.low{top:82%}
 #toast h2{margin:0 0 .25em;font-size:clamp(20px,4.2vmin,34px);font-weight:600}
 #toast p{margin:.15em 0;font-size:clamp(12px,2vmin,16px);color:var(--ink2);font-variant-numeric:tabular-nums}
 #toast .sum{font-size:clamp(18px,3.4vmin,28px);color:var(--gold);font-weight:700;margin-top:.3em}
@@ -308,6 +309,7 @@ const LINK = H * 0.8;       // つながっているとみなす距離
 const REACH = Math.max(FAR, CROSS);
 const RATE = 120;           // 物理の更新頻度(Hz)
 const MAX_P = 2600;
+const ROUND_FIT = 1.16;     // 丸くなったとみなす、最も遠い粒と半径の比
 const OVER_GRACE = 20;      // あふれてから終わるまでの猶予(秒)
 const capOf = () => isRamen() ? 800 : 1500;   // 水位100%の粒子数
 const SP_EFF = 36;          // 落ち着いた時の実際の粒子間隔
@@ -454,7 +456,7 @@ function applyTension() {
     linkOf[c] = clamp(LINK * Math.sqrt(t), H * .6, H * .91);
   }
 }
-const sim = { split: false, boost: 0 };   // split: ボーナス中は同色でも別の塊なら反発させる
+const sim = { split: false, boost: 0, round: false };   // split: ボーナス中は同色でも別の塊なら反発させる
 const ptr = { id: null, down: false, rawX: 0, rawY: 0, x: 0, y: 0, grabbing: false, blob: -1, moved: 0, speed: 0, stretch: 0, tethered: false, over: false, tau: 1 };
 
 function buildPairs() {
@@ -525,14 +527,25 @@ function simStep() {
   // 外力と移流
   // つかんだ塊: 根元はふくらみ、指に向かって細くなる首の形へ寄せる
   const neck = ptr.grabbing && ptr.tethered && !ptr.over ? neckFrame() : null;
+  const rf = sim.round ? roundFrame() : null;
   if (neck && ptr.tau > 1) {
     const lim = neck.R * Math.max(1.05, 1.85 - (ptr.tau - 1) * .9);
     if (neck.L > lim) { ptr.x = neck.cx + neck.ux * lim; ptr.y = neck.cy + neck.uy * lim; neck.L = lim; }
+    // 指が先へ行った分だけ塊全体を運ぶ。切れにくくても動きは止めない(小さいほど軽い)
+    const lag = Math.hypot(ptr.rawX - neck.cx, ptr.rawY - neck.cy) - lim;
+    if (lag > 0) neck.tow = Math.max(neck.tow, Math.min(lag * .0016, lerp(.19, .10, Math.min(neck.c / 300, 1))));
   }
   for (let i = 0; i < n; i++) {
     if (dying[i]) { vx[i] *= .955; vy[i] *= .955; x[i] += vx[i]; y[i] += vy[i]; px[i] = x[i]; py[i] = y[i]; continue; }
-    vx[i] += PHYS.swirl * Math.sin(y[i] * .0031 + simT * .23);
-    vy[i] += PHYS.swirl * Math.sin(x[i] * .0027 - simT * .19);
+    if (rf) {
+      // 円の外の粒だけ内へ寄せ、全体を中央へ運ぶ。内側は圧力が広げて自然な円になる
+      const dx = x[i] - rf.x, dy = y[i] - rf.y, d = Math.hypot(dx, dy);
+      if (d > rf.R) { const f = Math.min((d - rf.R) * .002, .24) / d; vx[i] -= dx * f; vy[i] -= dy * f; }
+      vx[i] = (vx[i] + rf.ax) * .985; vy[i] = (vy[i] + rf.ay) * .985;
+    } else {
+      vx[i] += PHYS.swirl * Math.sin(y[i] * .0031 + simT * .23);
+      vy[i] += PHYS.swirl * Math.sin(x[i] * .0027 - simT * .19);
+    }
     vx[i] *= PHYS.drag; vy[i] *= PHYS.drag;
     if (P.fam[i] === 2) {
       // 小さなかけらは、近くの同じ色へゆっくり戻る
@@ -611,6 +624,20 @@ function simStep() {
   }
 }
 
+function blobCircle() {
+  let sx = 0, sy = 0, c = 0;
+  for (let i = 0; i < P.n; i++) if (!P.dying[i]) { sx += P.x[i]; sy += P.y[i]; c++; }
+  if (!c) return null;
+  return { x: sx / c, y: sy / c, n: c, R: Math.sqrt(c * SP_EFF * SP_EFF * .866 / Math.PI) };
+}
+function roundFrame() {
+  const f = blobCircle();
+  if (!f) return null;
+  const d = Math.hypot(f.x, f.y), a = Math.min(d * .0009, .14);
+  f.ax = d > 1 ? -f.x / d * a : 0; f.ay = d > 1 ? -f.y / d * a : 0;
+  return f;
+}
+
 function neckFrame() {
   const { x, y, fam, grab, dying } = P;
   let sx = 0, sy = 0, c = 0;
@@ -618,7 +645,7 @@ function neckFrame() {
   if (c < 3) return null;
   const cx = sx / c, cy = sy / c, ax = ptr.x - cx, ay = ptr.y - cy, L = Math.hypot(ax, ay) || 1;
   const R = Math.sqrt(c * SP_EFF * SP_EFF * .866 / Math.PI);
-  return { cx, cy, L, R, ux: ax / L, uy: ay / L, tow: (.003 + Math.min(L / (R + 40), 4) * .007) * ptr.tau * ptr.tau };
+  return { cx, cy, L, R, c, ux: ax / L, uy: ay / L, tow: (.003 + Math.min(L / (R + 40), 4) * .007) * ptr.tau * ptr.tau };
 }
 
 function shock(cx, cy, rad, pow) {
@@ -1013,6 +1040,15 @@ const Snd = {
   },
   over() { [7, 5, 3, 0].forEach((n, i) => this.pluck(this.note(n - 5), .16, 0, 2, null, i * .24)); },
   ui() { this.plop(620, 900, .05, .1); },
+  gather() {
+    [0, 2, 4].forEach((n, i) => this.pluck(this.note(n - 5), .13, (i - 1) * .2, 1.2, null, i * .2));
+    this.noise(300, 1400, .9, .8, .07);
+  },
+  maru() {
+    this.plop(120, 300, .22, .38);
+    this.release(0, 1);
+    this.clear();
+  },
   bonusIntro() {
     [0, 2, 4, 7, 9, 12].forEach((n, i) => this.pluck(this.note(n), .22, (i - 2.5) * .18, 1.4, null, i * .09));
     this.noise(800, 7000, .8, .7, .12);
@@ -1247,7 +1283,7 @@ void main(){
 const fsBlob = (chunk, shade) => `#version 300 es
 precision highp float;
 in vec2 vW; out vec4 o;
-uniform sampler2D uFA,uFB; uniform float uGain; uniform vec3 uCol[6]; uniform float uFlash[6];
+uniform sampler2D uFA,uFB; uniform float uGain; uniform vec3 uCol[6]; uniform float uFlash[6]; uniform vec4 uRound;
 ${chunk}
 int idx; vec4 mA,mB;
 float F(vec2 uv){ return (idx<4?dot(texture(uFA,uv),mA):dot(texture(uFB,uv),mB))/uGain; }
@@ -1262,12 +1298,16 @@ void main(){
   if(b.r>best){best=b.r;idx=4;} if(b.g>best){best=b.g;idx=5;}
   mA=vec4(idx==0,idx==1,idx==2,idx==3); mB=vec4(idx==4,idx==5,0.,0.);
   float f=best/uGain;
+  // 完成の瞬間は、粒の並びが輪郭に出ないよう真円の場へ移す
+  vec2 rq=vW-uRound.xy; float rd=length(rq); vec2 rdir=rq/max(rd,1.);
+  f=mix(f,clamp(ISO+(uRound.z-rd)*.018,0.,3.4),uRound.w);
   float aa=max(fwidth(f),.004);
   float m=smoothstep(ISO-aa,ISO+aa,f);
   if(m<=.002)discard;
   // 縁の細かい法線
   float e=2.5/1024.;
   vec2 grad=vec2(F(uv+vec2(e,0.))-F(uv-vec2(e,0.)),F(uv+vec2(0.,e))-F(uv-vec2(0.,e)))/(2.*e*W);
+  grad=mix(grad,-rdir*.018,uRound.w);
   float t=max(f-ISO,0.);
   float H0=1.-exp(-t*1.25);
   // ぼかした場から作る大きなドーム
@@ -1275,6 +1315,9 @@ void main(){
   vec2 gw=vec2(FL(uv+vec2(E,0.),LD)-FL(uv-vec2(E,0.),LD),FL(uv+vec2(0.,E),LD)-FL(uv-vec2(0.,E),LD))/(2.*E*W);
   float wide=FL(uv,LD);
   float dome=smoothstep(.4,2.6,wide);
+  float rn=clamp(rd/max(uRound.z,1.),0.,1.);
+  gw=mix(gw,-rdir*.034*rn*rn,uRound.w);
+  dome=mix(dome,1.-rn*rn,uRound.w);
   vec3 Nw=normalize(vec3(-gw*30.,1.));
   vec3 N=normalize(vec3(-grad*exp(-t*1.25)*1.25*17.-gw*22.,1.));
   vec3 col=uCol[idx];
@@ -1548,6 +1591,12 @@ function render(t) {
   gl.useProgram(blobP.pr); setCommon(blobP); setWater(blobP, t); bindFields(blobP);
   gl.uniform3fv(blobP.u.uCol, pal);
   gl.uniform1fv(blobP.u.uFlash, Game.flash);
+  const rc = Game.roundAmt > 0 ? blobCircle() : null;
+  if (rc) {
+    // ぷるんと弾んでから静まる
+    const e = t - Game.maruClock, wob = 1 + .045 * Math.exp(-e * 4.2) * Math.sin(e * 15);
+    gl.uniform4f(blobP.u.uRound, rc.x, rc.y, (rc.R * 1.06 + 24) * wob, Game.roundAmt);
+  } else gl.uniform4f(blobP.u.uRound, 0, 0, 0, 0);
   gl.bindVertexArray(R.empty); gl.drawArrays(gl.TRIANGLES, 0, 3);
 
   // ジェルの中の小さな泡
@@ -1591,6 +1640,7 @@ const Game = {
   combo: 0, comboT: 0, chain: 0, chainT: 0, vanishedThisLevel: 0, mergedThisLevel: 0,
   next: -1, dripIn: 0, dripEvery: 0, dripPause: 0, dripSpot: null, dripSize: 12,
   meter: 0, peak: 0, overT: 0, warned: false,
+  roundAmt: 0, roundShow: false, maruClock: 0,
   bonusTime: 0, bonusTotal: 20, bonusTarget: 20, pieces: 0, stroke: null,
   q: [], startScore: 0, beat: 0, newBest: false,
 
@@ -1660,7 +1710,7 @@ const Game = {
     this.popHold.fill(0);
     this.combo = 0; this.comboT = 0; this.chain = 0; this.chainT = 0; this.vanishedThisLevel = 0; this.mergedThisLevel = 0;
     this.overT = 0; this.warned = false; this.dripPause = 0; this.dripSpot = null; this.peak = 0; this.stroke = null;
-    sim.boost = 0;
+    sim.boost = 0; sim.round = false; this.rounding = false; this.roundShow = false; this.roundAmt = 0;
     applyTension();
     releaseGrab(false);
     Snd.step = 0;
@@ -1741,7 +1791,9 @@ const Game = {
       if (s.big === 1 && !s.pending && (!this.dripSpot || this.next !== col)) {
         this.popHold[col] += 1 / 15;
         this.flash[col] = Math.max(this.flash[col], this.popHold[col] * 1.1);
-        if (this.popHold[col] >= .36) { this.popColor(col); this.colorsLeft.splice(i, 1); }
+        if (isRamen()) {
+          if (this.popHold[col] >= .2) { this.colorsLeft.splice(i, 1); this.beginRound(col); return; }
+        } else if (this.popHold[col] >= .36) { this.popColor(col); this.colorsLeft.splice(i, 1); }
       } else this.popHold[col] = 0;
     }
     if (!this.colorsLeft.length && this.state === 'play') this.levelDone();
@@ -1917,20 +1969,75 @@ const Game = {
   },
 
   /* ---- 終わり方 ---- */
-  levelDone() {
+  // ラーメンの完成: 中央で丸くなるのを見せてから次へ進む
+  beginRound(col) {
+    this.state = 'clearing';
+    releaseGrab(false);
+    this.rounding = true; this.roundT = 0; this.roundCol = col;
+    sim.round = true; sim.boost = 1;
+    Snd.gather();
+  },
+  updateRound(dt) {
+    this.roundT += dt;
+    this.flash[this.roundCol] = Math.max(this.flash[this.roundCol], Math.min(this.roundT * .35, .35));
+    const c = blobCircle();
+    if (!c) { this.rounding = false; this.levelDone(); return; }
+    let far = 0;
+    for (let i = 0; i < P.n; i++) {
+      if (P.dying[i]) continue;
+      far = Math.max(far, Math.hypot(P.x[i] - c.x, P.y[i] - c.y));
+    }
+    if ((this.roundT > .5 && far <= c.R * ROUND_FIT) || this.roundT >= 1.8) this.roundDone(c);
+  },
+  roundDone(c) {
+    this.rounding = false;
+    const col = this.roundCol;
+    this.roundShow = true; this.maruClock = performance.now() / 1000;
+    const pts = (420 + Math.min(c.n, 300) * 7) * this.mult() * this.levelMult();
+    this.addScore(pts, c.x, c.y - c.R - 60, col, 'まんまる！', true);
+    save.vanish++; this.vanishedThisLevel++;
+    this.flash[col] = 1;
+    Snd.maru();
+    vibrate(35);
+    ripple(c.x, c.y, 2);
+    const edge = c.R + 34;
+    for (let k = 0; k < 44; k++) {
+      const a = k / 44 * TAU;
+      burst(c.x + Math.cos(a) * edge, c.y + Math.sin(a) * edge, col, 1, 7, 1.1);
+    }
+    this.levelDone(Math.round(pts / 5) * 5);
+  },
+  dissolveRound() {
+    const c = blobCircle();
+    sim.round = false; sim.boost = 0; this.roundShow = false;
+    if (!c) return;
+    for (let i = 0; i < P.n; i++) {
+      if (P.dying[i]) continue;
+      P.dying[i] = 1;
+      const dx = P.x[i] - c.x, dy = P.y[i] - c.y, s = rand(1.5, 4) / (c.R + 1);
+      P.vx[i] = dx * s; P.vy[i] = dy * s;
+    }
+    pairsOK = false;
+    burst(c.x, c.y, this.roundCol, 26, 9, 1);
+    ripple(c.x, c.y, .9);
+    Snd.plop(420, 900, .12, .16);
+  },
+  levelDone(maruPts = 0) {
     this.state = 'clearing';
     releaseGrab(false);
     const clearBonus = Math.round((180 + this.level * 70) / 5) * 5;
     const calm = Math.round(clamp(1 - this.peak, 0, 1) * 500 * this.levelMult() / 5) * 5;
     this.score += clearBonus + calm; this.touchBest();
-    this.after(.7, () => {
-      Snd.clear();
-      burst(0, 0, -1, 70, 20, 1.3);
-      ripple(0, 0, 2);
-      this.finishLevel([`クリアボーナス +${fmt(clearBonus)}`, `おだやかボーナス +${fmt(calm)}`, `つなげた数 ${this.mergedThisLevel}　時間 ${fmtTime(this.levelTime)}`], clearBonus + calm);
+    this.after(maruPts ? .5 : .7, () => {
+      if (!maruPts) {
+        Snd.clear();
+        burst(0, 0, -1, 70, 20, 1.3);
+        ripple(0, 0, 2);
+      }
+      this.finishLevel([`クリアボーナス +${fmt(clearBonus)}`, `おだやかボーナス +${fmt(calm)}`, `つなげた数 ${this.mergedThisLevel}　時間 ${fmtTime(this.levelTime)}`], clearBonus + calm + maruPts, !!maruPts);
     });
   },
-  finishLevel(lines, sum) {
+  finishLevel(lines, sum, maru = false) {
     const L = this.level, nextL = L + 1;
     save.clears++;
     ms().maxLevel = Math.max(ms().maxLevel, nextL);
@@ -1942,7 +2049,8 @@ const Game = {
     this.syncCharges();
     const changed = themeOf(nextL) !== themeOf(L);
     const nextLook = isRamen() ? `つぎのスープ: ${lookOf(nextL).name}` : `つぎの水面: ${lookOf(nextL).name}`;
-    showToast(`LEVEL ${L} クリア`, lines.map(s => `<p>${s}</p>`).join('') + `<p class="sum">+${fmt(sum)}</p>` + (changed ? `<p>${nextLook}</p>` : ''), 2600);
+    showToast(`LEVEL ${L} クリア`, lines.map(s => `<p>${s}</p>`).join('') + `<p class="sum">+${fmt(sum)}</p>` + (changed ? `<p>${nextLook}</p>` : ''), 2600, maru);
+    if (maru) this.after(2.25, () => this.dissolveRound());
     this.after(2.9, () => { this.newBest = false; $('best').classList.remove('new'); this.start(nextL, true); });
   },
   gameOver() {
@@ -1960,6 +2068,7 @@ const Game = {
   /* ---- 毎フレーム ---- */
   update(dt) {
     for (let i = 0; i < COLORS.length; i++) this.flash[i] *= Math.pow(.02, dt);
+    this.roundAmt = this.roundShow ? Math.min(1, this.roundAmt + dt * 6) : Math.max(0, this.roundAmt - dt * 7);
     updateTheme(dt);
     if (this.state !== 'play' && this.state !== 'clearing' && this.state !== 'intro') return;
     this.t += dt;
@@ -1969,6 +2078,7 @@ const Game = {
     }
     if (this.state !== 'play' && this.state !== 'clearing') return;
     save.playSec += dt;
+    if (this.rounding) this.updateRound(dt);
     if (this.state !== 'play') return;
     this.levelTime += dt;
     if (this.comboT > 0) { this.comboT -= dt; if (this.comboT <= 0) { this.combo = 0; Snd.step = 0; } }
@@ -2247,8 +2357,9 @@ function floatText(text, x, y, col, big) {
   document.body.appendChild(el);
 }
 let toastTimer = 0;
-function showToast(title, html, ms) {
+function showToast(title, html, ms, low = false) {
   $('toastTtl').textContent = title; $('toastBody').innerHTML = html;
+  $('toast').classList.toggle('low', low);
   $('toast').classList.add('on');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => $('toast').classList.remove('on'), ms);
@@ -2363,7 +2474,7 @@ function toTitle() {
 }
 function demoBoard() {
   clearParticles();
-  sim.split = false; sim.boost = 0;
+  sim.split = false; sim.boost = 0; sim.round = false;
   Game.level = ms().level;
   Game.meter = 0;
   const ramen = isRamen();
@@ -2451,7 +2562,7 @@ function boot() {
 }
 boot();
 // 動作確認用
-window.__oilmerge = { Game, P, ptr, save, sim, tau, linkOf, ms, setMode, beads, PHYS, Snd, colorStat, simStep, track, reap, toCss, view, get blobList() { return blobList; }, get np() { return np; } };
+window.__oilmerge = { spawnBlob, Game, P, ptr, save, sim, tau, linkOf, ms, setMode, beads, PHYS, Snd, colorStat, simStep, track, reap, toCss, view, get blobList() { return blobList; }, get np() { return np; } };
 </script>
 </body>
 </html>
