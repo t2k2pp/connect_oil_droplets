@@ -1,4 +1,10 @@
 # しずくあわせ
+[![Play on GitHub Pages](https://img.shields.io/badge/Play-GitHub%20Pages-brightgreen?style=for-the-badge&logo=github)](https://t2k2pp.github.io/connect_oil_droplets/)
+
+👉 **[今すぐブラウザで遊ぶ (GitHub Pages)](https://t2k2pp.github.io/connect_oil_droplets/)**  
+*(スマートフォン・タブレット・PCの各ブラウザでクリックするだけでそのまま遊べます)*
+
+
 
 水面に浮かぶ色のしずくを、のばして、つなげて、とかして消す、ゆったり遊ぶパズルゲームです。
 
