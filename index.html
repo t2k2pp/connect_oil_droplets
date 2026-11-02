@@ -126,7 +126,7 @@ canvas#gl.hashiCursor,canvas#gl.hashiCursor.grabbing{cursor:none}
 #ovTitle .btn{padding:.6em 1em;margin-top:.4em}
 #ovTitle .mini{margin-top:.5em}
 #ovTitle .desc{margin-bottom:.5em}
-#ovTitle .tensionBox,#ovTitle .dripBox{padding:.5em .8em}
+#ovTitle .tensionBox,#ovTitle .dripBox,#ovTitle .hashiBox{padding:.5em .8em}
 .slider{display:flex;align-items:center;gap:.8em;margin:.7em 0;font-size:clamp(12px,2vmin,15px);text-align:left}
 .slider span{flex:none;width:4.5em}
 .slider input{flex:1;accent-color:#fff;height:26px;touch-action:auto}
@@ -140,13 +140,13 @@ canvas#gl.hashiCursor,canvas#gl.hashiCursor.grabbing{cursor:none}
 .tab{flex:1;padding:.55em .4em;border-radius:99px;font-size:clamp(14px,2.3vmin,16px);color:var(--ink2);transition:background .2s}
 .tab.on{background:#fff;color:#2d6496;font-weight:700;text-shadow:none}
 .desc{margin:.1em 0 .8em;font-size:clamp(11px,1.9vmin,13px);line-height:1.6;color:var(--ink2)}
-.tensionBox,.dripBox{margin:.2em 0 .5em;padding:.7em .8em;border-radius:18px;background:rgba(20,50,90,.16);text-align:left}
-.tensionBox .ttl,.dripBox .ttl{font-size:clamp(12px,2vmin,14px);margin-bottom:.45em;display:block}
+.tensionBox,.dripBox,.hashiBox{margin:.2em 0 .5em;padding:.7em .8em;border-radius:18px;background:rgba(20,50,90,.16);text-align:left}
+.tensionBox .ttl,.dripBox .ttl,.hashiBox .ttl{font-size:clamp(12px,2vmin,14px);margin-bottom:.45em;display:block}
 .chips{display:flex;gap:5px}
 .chip{flex:1;padding:.4em 0;border-radius:99px;font-size:clamp(11px,1.9vmin,13px);border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.1)}
 .chip.on{background:#fff;color:#2d6496;font-weight:700;text-shadow:none}
 .tensionBox input{width:100%;margin:.55em 0 .1em;accent-color:#fff;height:22px;touch-action:auto;display:block}
-.tensionBox .note,.dripBox .note{font-size:clamp(10px,1.7vmin,12px);line-height:1.5;color:var(--ink2);margin-top:.35em;display:block}
+.tensionBox .note,.dripBox .note,.hashiBox .note{font-size:clamp(10px,1.7vmin,12px);line-height:1.5;color:var(--ink2);margin-top:.35em;display:block}
 /* ボーナス開始 */
 .bonusOv{z-index:5;background:rgba(40,70,120,.42);cursor:pointer}
 .bonusCard{animation:bonusPop .5s cubic-bezier(.2,1.5,.4,1) both;background:rgba(70,100,150,.72)}
@@ -164,7 +164,7 @@ body.ramen .bonusOv{background:rgba(90,50,20,.45)}
 body.ramen .card{background:rgba(110,70,38,.68)}
 body.ramen .bonusCard{background:rgba(120,70,30,.78)}
 body.ramen .btn.main,body.ramen .tab.on,body.ramen .chip.on{color:#8a4b1c}
-body.ramen .tabs,body.ramen .tensionBox,body.ramen .dripBox{background:rgba(60,30,10,.2)}
+body.ramen .tabs,body.ramen .tensionBox,body.ramen .dripBox,body.ramen .hashiBox{background:rgba(60,30,10,.2)}
 .next-drop.naruto{background:conic-gradient(rgba(255,255,255,.95) calc(var(--p,0)*1turn),rgba(255,255,255,.18) 0);opacity:1}
 .next-drop.naruto::after{inset:2px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath fill='%23fff8ef' d='M20 1l3.2 2.6 3.9-1.3 2.4 3.3 4.1.1.9 4 3.9 1.5-.5 4.1 3.3 2.6-1.8 3.7 2 3.6-3.1 2.7.7 4.1-3.8 1.6-.8 4-4.1.2-2.3 3.4-3.9-1.2L20 39l-3.2-2.6-3.9 1.3-2.4-3.3-4.1-.1-.9-4-3.9-1.5.5-4.1L-.1 22l1.8-3.7-2-3.6 3.1-2.7-.7-4.1 3.8-1.6.8-4 4.1-.2 2.3-3.4 3.9 1.2z'/%3E%3Cpath fill='none' stroke='%23ff5f9e' stroke-width='3.4' stroke-linecap='round' d='M20 20c1.5-2 4.6-.6 4 2-.7 3-5.3 3.6-7.5 1.2-2.7-3-1-8 3-9 4.7-1.2 9 2.3 9 7 0 5.300-4.800 9-10 8'/%3E%3C/svg%3E") center/contain no-repeat}
 .next-drop.naruto.none{opacity:.35}
@@ -266,6 +266,7 @@ body.ramen .tabs,body.ramen .tensionBox,body.ramen .dripBox{background:rgba(60,3
     <p id="modeDesc" class="desc"></p>
     <div class="tensionBox"></div>
     <div class="dripBox"></div>
+    <div class="hashiBox"></div>
     <button id="btnContinue" class="btn main">つづきから</button>
     <button id="btnNew" class="btn">はじめから</button>
     <button id="btnPick" class="btn">レベルを選ぶ</button>
@@ -281,6 +282,7 @@ body.ramen .tabs,body.ramen .tensionBox,body.ramen .dripBox{background:rgba(60,3
     <div class="slider"><span>環境音</span><input id="rngAmb" type="range" min="0" max="100"></div>
     <div class="tensionBox"></div>
     <div class="dripBox" data-later="1"></div>
+    <div class="hashiBox"></div>
     <button id="btnResume" class="btn main">つづける</button>
     <button id="btnRestart" class="btn">このレベルをやり直す</button>
     <button id="btnPick2" class="btn">レベルを選ぶ</button>
@@ -382,7 +384,7 @@ const lookOf = L => (isRamen() ? SOUPS : THEMES)[themeOf(L)];
 /* ---------- 保存 ---------- */
 const SAVE_KEY = 'oilmerge.save.v1', BOARD_KEY = 'oilmerge.board.v1';
 const save = Object.assign({
-  mode: 'color', tension: 50, tensionMode: 'fixed', drips: true, modes: {},
+  mode: 'color', tension: 50, tensionMode: 'fixed', drips: true, hashiShift: false, modes: {},
   merges: 0, vanish: 0, clears: 0, playSec: 0, bestCombo: 0,
   se: 80, amb: 45, charges: 1,
 }, readJSON(SAVE_KEY));
@@ -2389,8 +2391,12 @@ function updateTheme(dt) {
 }
 
 /* ---------- 入力 ---------- */
-function grabAt(wx, wy) {
-  let best = -1, bd = 120 * 120;
+// 左下モードでは、指に隠れない箸先の位置で選ぶ
+const TIP_SHIFT = 44;
+const tipShift = () => isRamen() && save.hashiShift;
+const pointerWorld = e => tipShift() ? toWorld(e.clientX - TIP_SHIFT, e.clientY + TIP_SHIFT) : toWorld(e.clientX, e.clientY);
+function grabAt(wx, wy, reach = 120) {
+  let best = -1, bd = reach * reach;
   for (let i = 0; i < P.n; i++) {
     if (P.dying[i] || P.w[i] <= 0) continue;
     const dx = P.x[i] - wx, dy = P.y[i] - wy, d = dx * dx + dy * dy;
@@ -2430,7 +2436,7 @@ function releaseGrab(withSound = true) {
 canvas.addEventListener('pointerdown', e => {
   Snd.init();
   if (ptr.down || !Game.playing()) return;
-  const [wx, wy] = toWorld(e.clientX, e.clientY);
+  const [wx, wy] = pointerWorld(e);
   ptr.id = e.pointerId; ptr.down = true; ptr.rawX = ptr.x = wx; ptr.rawY = ptr.y = wy; ptr.moved = 0;
   try { canvas.setPointerCapture(e.pointerId); } catch (err) {}
   ripple(wx, wy, .35);
@@ -2439,10 +2445,12 @@ canvas.addEventListener('pointerdown', e => {
 });
 canvas.addEventListener('pointermove', e => {
   if (e.pointerId !== ptr.id || !ptr.down) return;
-  const [wx, wy] = toWorld(e.clientX, e.clientY);
+  const [wx, wy] = pointerWorld(e);
   const d = Math.hypot(wx, wy), lim = INNER - 20;
   ptr.rawX = d > lim ? wx * lim / d : wx; ptr.rawY = d > lim ? wy * lim / d : wy;
   if (Game.bonus) { ptr.x = ptr.rawX; ptr.y = ptr.rawY; Game.cutAt(ptr.rawX, ptr.rawY); }
+  // 押した後に箸先を見ながら油まで滑らせて、つかめるようにする
+  else if (tipShift() && !ptr.grabbing && Game.playing() && grabAt(ptr.rawX, ptr.rawY, 70)) Snd.grab(ptr.rawX / DISH);
 });
 const pointerEnd = e => {
   if (e.pointerId !== ptr.id) return;
@@ -2508,6 +2516,7 @@ function refreshTitle() {
   $('modeDesc').innerHTML = ramen ? 'スープに浮かぶ油を、ひとつにまとめる。<br>醤油、塩、味噌、豚骨とスープが変わります。' : 'カラフルなしずくを、色ごとにつなげて消す。<br>同じ色がすべてつながると、はじけます。';
   syncTension();
   syncDrips();
+  syncHashiBox();
 }
 function setMode(m) {
   if (save.mode === m) return;
@@ -2564,6 +2573,25 @@ function syncDrips() {
       : 'ゲームオーバーなし。小さな粒も取り込み、全部そろうまで消えません。') + later;
   });
 }
+function mountHashi(box) {
+  box.innerHTML = `<span class="ttl">箸先の位置</span>
+    <div class="chips"><button class="chip" data-s="0">指の位置</button><button class="chip" data-s="1">左下にずらす</button></div>
+    <span class="note"></span>`;
+  box.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+    Snd.init(); Snd.ui();
+    save.hashiShift = c.dataset.s === '1';
+    persist(); syncHashiBox();
+  }));
+}
+function syncHashiBox() {
+  document.querySelectorAll('.hashiBox').forEach(box => {
+    box.style.display = isRamen() ? '' : 'none';
+    box.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', (c.dataset.s === '1') === save.hashiShift));
+    box.querySelector('.note').textContent = save.hashiShift
+      ? '箸先が指の左下に出て、その位置で油をつかみます。押したまま滑らせてもつかめます。'
+      : '指で触れた位置で油をつかみます。';
+  });
+}
 function tensionChanged() { applyTension(); persist(); syncTension(); }
 function syncTension() {
   const by = save.tensionMode === 'byColor';
@@ -2584,6 +2612,7 @@ function pause() {
   $('pauseStats').innerHTML = statsHtml();
   syncTension();
   syncDrips();
+  syncHashiBox();
   showOverlay('ovPause');
   Game.saveBoard();
   persist();
@@ -2640,6 +2669,7 @@ function demoBoard() {
 const uiClick = (id, fn) => $(id).addEventListener('click', () => { Snd.init(); Snd.ui(); fn(); });
 document.querySelectorAll('.tensionBox').forEach(mountTension);
 document.querySelectorAll('.dripBox').forEach(mountDrips);
+document.querySelectorAll('.hashiBox').forEach(mountHashi);
 uiClick('tabColor', () => setMode('color'));
 uiClick('tabRamen', () => setMode('ramen'));
 $('ovBonus').addEventListener('click', () => { Snd.init(); Game.beginBonus(); });
@@ -2672,7 +2702,8 @@ function syncHashi() {
   el.classList.toggle('down', ptr.down);
   canvas.classList.toggle('hashiCursor', isRamen() && inGame && hashi.mouse);
   if (!show) return;
-  el.style.transform = `translate(${hashi.x}px,${hashi.y}px)`;
+  const dx = tipShift() ? TIP_SHIFT : 0;
+  el.style.transform = `translate(${hashi.x - dx}px,${hashi.y + dx}px)`;
   // 箸先がスープを動かすさざなみ
   if (ptr.down && ptr.moved - hashi.rip > 170) { hashi.rip = ptr.moved; ripple(ptr.x, ptr.y, .22); }
 }
@@ -2731,7 +2762,7 @@ function boot() {
 }
 boot();
 // 動作確認用
-window.__oilmerge = { spawnBlob, blobCircles, Game, P, ptr, save, sim, tau, linkOf, ms, setMode, beads, PHYS, Snd, colorStat, simStep, track, reap, toCss, view, get blobList() { return blobList; }, get np() { return np; } };
+window.__oilmerge = { TIP_SHIFT, spawnBlob, blobCircles, Game, P, ptr, save, sim, tau, linkOf, ms, setMode, beads, PHYS, Snd, colorStat, simStep, track, reap, toCss, view, get blobList() { return blobList; }, get np() { return np; } };
 </script>
 </body>
 </html>
