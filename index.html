@@ -122,11 +122,7 @@ canvas#gl.hashiCursor,canvas#gl.hashiCursor.grabbing{cursor:none}
 .mini b{display:block;font-size:1.35em;color:#fff;font-weight:600}
 .logo{display:block;margin:0 auto .1em;width:clamp(64px,11vmin,96px);height:auto}
 .card h1{margin-bottom:.3em}
-#ovTitle .card{padding:clamp(14px,2.6vmin,26px)}
-#ovTitle .btn{padding:.6em 1em;margin-top:.4em}
-#ovTitle .mini{margin-top:.5em}
-#ovTitle .desc{margin-bottom:.5em}
-#ovTitle .tensionBox,#ovTitle .dripBox,#ovTitle .hashiBox{padding:.5em .8em}
+
 .slider{display:flex;align-items:center;gap:.8em;margin:.7em 0;font-size:clamp(12px,2vmin,15px);text-align:left}
 .slider span{flex:none;width:4.5em}
 .slider input{flex:1;accent-color:#fff;height:26px;touch-action:auto}
@@ -140,13 +136,37 @@ canvas#gl.hashiCursor,canvas#gl.hashiCursor.grabbing{cursor:none}
 .tab{flex:1;padding:.55em .4em;border-radius:99px;font-size:clamp(14px,2.3vmin,16px);color:var(--ink2);transition:background .2s}
 .tab.on{background:#fff;color:#2d6496;font-weight:700;text-shadow:none}
 .desc{margin:.1em 0 .8em;font-size:clamp(11px,1.9vmin,13px);line-height:1.6;color:var(--ink2)}
-.tensionBox,.dripBox,.hashiBox{margin:.2em 0 .5em;padding:.7em .8em;border-radius:18px;background:rgba(20,50,90,.16);text-align:left}
-.tensionBox .ttl,.dripBox .ttl,.hashiBox .ttl{font-size:clamp(12px,2vmin,14px);margin-bottom:.45em;display:block}
-.chips{display:flex;gap:5px}
-.chip{flex:1;padding:.4em 0;border-radius:99px;font-size:clamp(11px,1.9vmin,13px);border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.1)}
+/* メニュー: 文の長さや状態で枠の大きさを変えない */
+.card{position:relative}
+.menuCard{width:min(92vw,400px)}
+#ovTitle .card{padding:clamp(14px,2.6vmin,24px)}
+.fix2{height:3.1em;line-height:1.55;display:flex;align-items:center;justify-content:center;overflow:hidden;margin:0}
+.note{font-size:clamp(10.5px,1.7vmin,12px);color:var(--ink2);text-align:center}
+.desc{font-size:clamp(11px,1.9vmin,13px);color:var(--ink2)}
+.opt{display:flex;align-items:center;gap:.6em;margin:.45em 0 .1em;text-align:left}
+.optLabel{flex:none;width:6.2em;font-size:clamp(11.5px,1.9vmin,13px);line-height:1.25}
+.opt .chips{flex:1;min-width:0}
+.chips{display:flex;gap:4px}
+.chip{flex:1 1 0;min-width:0;height:2.3em;padding:0 2px;border-radius:99px;font-size:clamp(10.5px,1.8vmin,12.5px);border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.1);white-space:nowrap;overflow:hidden}
 .chip.on{background:#fff;color:#2d6496;font-weight:700;text-shadow:none}
-.tensionBox input{width:100%;margin:.55em 0 .1em;accent-color:#fff;height:22px;touch-action:auto;display:block}
-.tensionBox .note,.dripBox .note,.hashiBox .note{font-size:clamp(10px,1.7vmin,12px);line-height:1.5;color:var(--ink2);margin-top:.35em;display:block}
+.btnRow{display:flex;gap:.5em}
+.btnRow .btn{flex:1 1 0;min-width:0;white-space:nowrap;font-size:clamp(12px,2vmin,14px);padding-left:.3em;padding-right:.3em}
+.btn:disabled{opacity:.42;cursor:default}
+#ovTitle .btn{padding-top:.6em;padding-bottom:.6em;margin-top:.45em}
+.mini{min-height:3.1em}
+#ovTitle .mini{margin-top:.6em}
+.group{margin:.5em 0;padding:.5em .8em .35em;border-radius:16px;background:rgba(20,50,90,.16);text-align:left}
+.group h3{margin:0 0 .2em;font-size:clamp(11px,1.8vmin,12.5px);font-weight:600;color:var(--ink2);letter-spacing:.06em}
+.group .note{text-align:left;justify-content:flex-start}
+.opt input[type=range]{flex:1;min-width:0;accent-color:#fff;height:24px;touch-action:auto}
+input.wide{display:block;width:100%;accent-color:#fff;height:24px;margin:.2em 0 0;touch-action:auto}
+input:disabled{opacity:.35}
+.switch{flex:none;width:3.8em;height:2.1em;border-radius:99px;font-size:clamp(10.5px,1.7vmin,12px);font-weight:700;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.4);color:var(--ink2)}
+.switch.on{background:#fff;color:#2d6496;text-shadow:none}
+.narutoBtn{position:absolute;top:10px;right:10px;width:44px;height:44px;border-radius:50%;z-index:1;transition:transform .35s;
+  background:rgba(255,255,255,.14) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-2 -2 44 44'%3E%3Cpath fill='%23fff8ef' d='M20 1l3.2 2.6 3.9-1.3 2.4 3.3 4.1.1.9 4 3.900 1.500-.5 4.100 3.300 2.600-1.800 3.700 2 3.600-3.100 2.700.7 4.100-3.800 1.600-.8 4-4.100.2-2.300 3.400-3.900-1.200L20 39l-3.200-2.600-3.900 1.300-2.400-3.300-4.100-.1-.9-4-3.900-1.500.5-4.100L-.1 22l1.800-3.700-2-3.600 3.100-2.700-.7-4.100 3.800-1.600.8-4 4.100-.2 2.300-3.400 3.900 1.200z'/%3E%3Cpath fill='none' stroke='%23ff5f9e' stroke-width='3.400' stroke-linecap='round' d='M20 20c1.500-2 4.600-.6 4 2-.7 3-5.300 3.600-7.500 1.200-2.700-3-1-8 3-9 4.700-1.200 9 2.300 9 7 0 5.300-4.800 9-10 8'/%3E%3C/svg%3E") center/78% no-repeat}
+.narutoBtn:hover{transform:rotate(40deg)}
+.narutoBtn:active{transform:rotate(90deg) scale(.94)}
 /* ボーナス開始 */
 .bonusOv{z-index:5;background:rgba(40,70,120,.42);cursor:pointer}
 .bonusCard{animation:bonusPop .5s cubic-bezier(.2,1.5,.4,1) both;background:rgba(70,100,150,.72)}
@@ -163,8 +183,8 @@ body.ramen .overlay{background:rgba(120,75,40,.26)}
 body.ramen .bonusOv{background:rgba(90,50,20,.45)}
 body.ramen .card{background:rgba(110,70,38,.68)}
 body.ramen .bonusCard{background:rgba(120,70,30,.78)}
-body.ramen .btn.main,body.ramen .tab.on,body.ramen .chip.on{color:#8a4b1c}
-body.ramen .tabs,body.ramen .tensionBox,body.ramen .dripBox,body.ramen .hashiBox{background:rgba(60,30,10,.2)}
+body.ramen .btn.main,body.ramen .tab.on,body.ramen .chip.on,body.ramen .switch.on{color:#8a4b1c}
+body.ramen .tabs,body.ramen .group{background:rgba(60,30,10,.2)}
 .next-drop.naruto{background:conic-gradient(rgba(255,255,255,.95) calc(var(--p,0)*1turn),rgba(255,255,255,.18) 0);opacity:1}
 .next-drop.naruto::after{inset:2px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath fill='%23fff8ef' d='M20 1l3.2 2.6 3.9-1.3 2.4 3.3 4.1.1.9 4 3.9 1.5-.5 4.1 3.3 2.6-1.8 3.7 2 3.6-3.1 2.7.7 4.1-3.8 1.6-.8 4-4.1.2-2.3 3.4-3.9-1.2L20 39l-3.2-2.6-3.9 1.3-2.4-3.3-4.1-.1-.9-4-3.9-1.5.5-4.1L-.1 22l1.8-3.7-2-3.6 3.1-2.7-.7-4.1 3.8-1.6.8-4 4.1-.2 2.3-3.4 3.9 1.2z'/%3E%3Cpath fill='none' stroke='%23ff5f9e' stroke-width='3.4' stroke-linecap='round' d='M20 20c1.5-2 4.6-.6 4 2-.7 3-5.3 3.6-7.5 1.2-2.7-3-1-8 3-9 4.7-1.2 9 2.3 9 7 0 5.300-4.800 9-10 8'/%3E%3C/svg%3E") center/contain no-repeat}
 .next-drop.naruto.none{opacity:.35}
@@ -221,33 +241,34 @@ body.ramen .tabs,body.ramen .tensionBox,body.ramen .dripBox,body.ramen .hashiBox
       <div><label>TIME</label><b id="vTime">00:00</b></div>
     </section>
     <section id="status" class="glass">
-      <span class="ttl"><svg id="statusStar" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.8.8-5 4.7 1.3 6.8-6-3.4-6 3.4 1.3-6.8-5-4.7 6.8-.8z"/></svg><span id="statusTtl">水位</span></span>
-      <p id="statusMsg">つなげると、すこし下がるよ</p>
+      <span class="ttl"><svg id="statusStar" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.2 6.8.8-5 4.7 1.3 6.8-6-3.4-6 3.4 1.3-6.8-5-4.7 6.8-.8z"/></svg><span id="statusTtl"></span></span>
+      <p id="statusMsg"></p>
       <div class="bar"><i id="statusBar"></i></div>
       <span id="statusVal">0%</span>
     </section>
   </div>
 
   <section id="hints" class="glass">
-    <div><svg viewBox="0 0 32 32"><circle cx="15" cy="9" r="5.5" opacity=".55"/><path d="M15 9v11M15 13l6 1.2c1.6.3 2.5 1.4 2.5 3V23c0 3-2 5.5-5 5.5h-3c-2 0-3.3-.9-4.4-2.5l-4-6c-.8-1.3 1-2.7 2.2-1.5L12 22"/></svg>タッチして<br>色をつなげよう</div>
-    <div><svg viewBox="0 0 32 32"><path d="M15 12v9M15 15l5 1c1.5.3 2.3 1.3 2.3 2.8V24c0 2.7-1.8 4.8-4.5 4.8h-2.6c-1.8 0-3-.8-4-2.2l-3.3-5c-.8-1.2 .9-2.4 2-1.4l3 3M21 9l5-5M26 8V4h-4M9 9L4 4M4 8V4h4"/></svg>引っ張って<br>のばせるよ</div>
-    <div><svg viewBox="0 0 32 32"><path d="M15 12v9M15 15l5 1c1.5.3 2.3 1.3 2.3 2.8V24c0 2.7-1.8 4.8-4.5 4.8h-2.6c-1.8 0-3-.8-4-2.2l-3.3-5c-.8-1.2 .9-2.4 2-1.4l3 3M9 7c2-3.4 10-3.4 12 0M21 7V3.6M21 7h-3.4"/></svg>離すと少し<br>戻るよ</div>
+    <div><svg viewBox="0 0 32 32"><circle cx="15" cy="9" r="5.5" opacity=".55"/><path d="M15 9v11M15 13l6 1.2c1.6.3 2.5 1.4 2.5 3V23c0 3-2 5.5-5 5.5h-3c-2 0-3.3-.9-4.4-2.5l-4-6c-.8-1.3 1-2.7 2.2-1.5L12 22"/></svg><span data-t="hint1"></span></div>
+    <div><svg viewBox="0 0 32 32"><path d="M15 12v9M15 15l5 1c1.5.3 2.3 1.3 2.3 2.8V24c0 2.7-1.8 4.8-4.5 4.8h-2.6c-1.8 0-3-.8-4-2.2l-3.3-5c-.8-1.2 .9-2.4 2-1.4l3 3M21 9l5-5M26 8V4h-4M9 9L4 4M4 8V4h4"/></svg><span data-t="hint2"></span></div>
+    <div><svg viewBox="0 0 32 32"><path d="M15 12v9M15 15l5 1c1.5.3 2.3 1.3 2.3 2.8V24c0 2.7-1.8 4.8-4.5 4.8h-2.6c-1.8 0-3-.8-4-2.2l-3.3-5c-.8-1.2 .9-2.4 2-1.4l3 3M9 7c2-3.4 10-3.4 12 0M21 7V3.6M21 7h-3.4"/></svg><span data-t="hint3"></span></div>
   </section>
 
   <div id="ctrl">
-    <button id="btnPause" class="round glass" aria-label="一時停止"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="5" height="18" rx="2.2"/><rect x="14" y="3" width="5" height="18" rx="2.2"/></svg></button>
-    <button id="breath" class="round glass" aria-label="ひと息"><span>ひと息<span class="dots"><i></i><i></i><i></i></span></span></button>
+    <button id="btnPause" class="round glass" data-t-aria="pause"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="5" height="18" rx="2.2"/><rect x="14" y="3" width="5" height="18" rx="2.2"/></svg></button>
+    <button id="breath" class="round glass" data-t-aria="breath"><span><span data-t="breath"></span><span class="dots"><i></i><i></i><i></i></span></span></button>
   </div>
   <section id="goal" class="glass">
     <svg viewBox="0 0 24 24"><path d="M3 7l4.5 4L12 4l4.5 7L21 7l-2 12H5z"/></svg>
-    <span id="goalText">同じ色をすべてつなげて<br>消そう！</span>
+    <span id="goalText"></span>
   </section>
 </div>
 
 <section id="toast" class="glass"><h2 id="toastTtl"></h2><div id="toastBody"></div></section>
 
 <div id="ovTitle" class="overlay on">
-  <div class="card glass">
+  <div class="card glass menuCard">
+    <button id="btnSettings" class="narutoBtn" data-t-aria="settings"></button>
     <svg class="logo" viewBox="0 0 140 72" aria-hidden="true">
       <defs>
         <radialGradient id="lgA" cx=".35" cy=".3"><stop offset="0" stop-color="#d5b8ff"/><stop offset="1" stop-color="#8a3fe8"/></radialGradient>
@@ -258,46 +279,71 @@ body.ramen .tabs,body.ramen .tensionBox,body.ramen .dripBox,body.ramen .hashiBox
       <circle cx="34" cy="28" r="5" fill="#fff" opacity=".8"/><circle cx="101" cy="30" r="3.4" fill="#fff" opacity=".85"/>
       <circle cx="70" cy="62" r="7" fill="url(#lgB)"/>
     </svg>
-    <h1>しずくあわせ</h1>
+    <h1 data-t="title"></h1>
     <div class="tabs" role="tablist">
-      <button id="tabColor" class="tab" role="tab">カラフル</button>
-      <button id="tabRamen" class="tab" role="tab">ラーメン</button>
+      <button id="tabColor" class="tab" role="tab" data-t="modeColor"></button>
+      <button id="tabRamen" class="tab" role="tab" data-t="modeRamen"></button>
     </div>
-    <p id="modeDesc" class="desc"></p>
-    <div class="tensionBox"></div>
-    <div class="dripBox"></div>
-    <div class="hashiBox"></div>
-    <button id="btnContinue" class="btn main">つづきから</button>
-    <button id="btnNew" class="btn">はじめから</button>
-    <button id="btnPick" class="btn">レベルを選ぶ</button>
+    <p id="modeDesc" class="desc fix2"></p>
+    <div class="opt">
+      <span class="optLabel" data-t="drips"></span>
+      <div class="chips" id="dripChips"><button class="chip" data-d="1" data-t="on"></button><button class="chip" data-d="0" data-t="off"></button></div>
+    </div>
+    <p id="dripNote" class="note fix2"></p>
+    <div class="opt">
+      <span class="optLabel" data-t="tension"></span>
+      <div class="chips tensionChips"></div>
+    </div>
+    <button id="btnContinue" class="btn main"></button>
+    <div class="btnRow"><button id="btnNew" class="btn" data-t="fromOne"></button><button id="btnPick" class="btn" data-t="pickLevel"></button></div>
     <div id="titleStats" class="mini"></div>
-    <div id="noGL">この環境ではWebGL2が使えないため、ゲームを表示できません。</div>
+    <div id="noGL" data-t="noGL"></div>
   </div>
 </div>
 
 <div id="ovPause" class="overlay">
-  <div class="card glass">
-    <h2>ひとやすみ</h2>
-    <div class="slider"><span>効果音</span><input id="rngSe" type="range" min="0" max="100"></div>
-    <div class="slider"><span>環境音</span><input id="rngAmb" type="range" min="0" max="100"></div>
-    <div class="tensionBox"></div>
-    <div class="dripBox" data-later="1"></div>
-    <div class="hashiBox"></div>
-    <button id="btnResume" class="btn main">つづける</button>
-    <button id="btnRestart" class="btn">このレベルをやり直す</button>
-    <button id="btnPick2" class="btn">レベルを選ぶ</button>
-    <button id="btnToTitle" class="btn">タイトルへ</button>
+  <div class="card glass menuCard">
+    <button id="btnSettings2" class="narutoBtn" data-t-aria="settings"></button>
+    <h2 data-t="pauseTtl"></h2>
+    <button id="btnResume" class="btn main" data-t="resume"></button>
+    <button id="btnRestart" class="btn" data-t="restart"></button>
+    <button id="btnPick2" class="btn" data-t="pickLevel"></button>
+    <button id="btnToTitle" class="btn" data-t="toTitle"></button>
     <div id="pauseStats" class="mini"></div>
+  </div>
+</div>
+
+<div id="ovSettings" class="overlay">
+  <div class="card glass menuCard">
+    <h2 data-t="settings"></h2>
+    <section class="group">
+      <h3 data-t="groupSound"></h3>
+      <div class="opt"><span class="optLabel" data-t="se"></span><button id="swSe" class="switch" role="switch"></button><input id="rngSe" type="range" min="0" max="100"></div>
+      <div class="opt"><span class="optLabel" data-t="amb"></span><button id="swAmb" class="switch" role="switch"></button><input id="rngAmb" type="range" min="0" max="100"></div>
+    </section>
+    <section class="group">
+      <h3 data-t="groupPlay"></h3>
+      <div class="opt"><span class="optLabel" data-t="tension"></span><div class="chips tensionChips"></div></div>
+      <input id="rngTension" class="wide" type="range" min="0" max="100" data-t-aria="tension">
+      <p id="tensionNote" class="note fix2"></p>
+      <div class="opt"><span class="optLabel" data-t="hashi"></span><div class="chips" id="hashiChips"><button class="chip" data-s="0" data-t="hashiFinger"></button><button class="chip" data-s="1" data-t="hashiShift"></button></div></div>
+      <p id="hashiNote" class="note fix2"></p>
+    </section>
+    <section class="group">
+      <h3 data-t="groupLang"></h3>
+      <div class="chips" id="langChips"><button class="chip" data-l="auto" data-t="langAuto"></button><button class="chip" data-l="ja">日本語</button><button class="chip" data-l="en">English</button></div>
+    </section>
+    <button id="btnSetBack" class="btn main" data-t="back"></button>
   </div>
 </div>
 
 <div id="ovOver" class="overlay">
   <div class="card glass">
-    <h2 id="overTtl">水があふれました</h2>
-    <p class="sub">記録はぜんぶ残っています。<br>好きなレベルから、またゆっくりどうぞ。</p>
+    <h2 id="overTtl"></h2>
+    <p class="sub" data-t="overSub"></p>
     <div id="overStats" class="mini"></div>
-    <button id="btnRetry" class="btn main">もう一度</button>
-    <button id="btnPick3" class="btn">クリアしたレベルから選ぶ</button>
+    <button id="btnRetry" class="btn main"></button>
+    <button id="btnPick3" class="btn" data-t="pickCleared"></button>
   </div>
 </div>
 
@@ -307,16 +353,16 @@ body.ramen .tabs,body.ramen .tensionBox,body.ramen .dripBox,body.ramen .hashiBox
     <h1>BONUS STAGE</h1>
     <p id="bonusDesc" class="sub"></p>
     <p id="bonusRule" class="rule"></p>
-    <p class="tapNote">タップですぐ始める</p>
+    <p class="tapNote" data-t="tapStart"></p>
   </div>
 </div>
 
 <div id="ovLevels" class="overlay">
   <div class="card glass">
-    <h2>レベルを選ぶ</h2>
-    <p class="sub" style="margin-bottom:.4em">★の枠はボーナスの水面です。</p>
+    <h2 data-t="levelsTtl"></h2>
+    <p class="sub" style="margin-bottom:.4em" data-t="levelsSub"></p>
     <div id="levelGrid"></div>
-    <button id="btnLevelsBack" class="btn">もどる</button>
+    <button id="btnLevelsBack" class="btn" data-t="back"></button>
   </div>
 </div>
 
@@ -386,7 +432,7 @@ const SAVE_KEY = 'oilmerge.save.v1', BOARD_KEY = 'oilmerge.board.v1';
 const save = Object.assign({
   mode: 'color', tension: 50, tensionMode: 'fixed', drips: true, hashiShift: false, modes: {},
   merges: 0, vanish: 0, clears: 0, playSec: 0, bestCombo: 0,
-  se: 80, amb: 45, charges: 1,
+  se: 80, amb: 45, seOn: true, ambOn: true, lang: 'auto', charges: 1,
 }, readJSON(SAVE_KEY));
 const blankMode = () => ({ best: 0, score: 0, level: 1, maxLevel: 1, checkpoints: { 1: 0 }, played: false });
 if (!save.modes.color) {
@@ -398,6 +444,72 @@ if (!save.modes.ramen) save.modes.ramen = blankMode();
 function ms() { return save.modes[save.mode]; }
 const isRamen = () => save.mode === 'ramen';
 const boardKey = () => isRamen() ? 'oilmerge.board.ramen.v1' : BOARD_KEY;
+
+/* ---------- 言語 ---------- */
+const I18N = {
+  ja: {
+    title: 'しずくあわせ', modeColor: 'カラフル', modeRamen: 'ラーメン',
+    descColor: 'カラフルなしずくを、色ごとにつなげて消す。', descRamen: 'スープの油を、ひとつにまとめる。スープは4種類。',
+    drips: 'しずくの追加', on: 'あり', off: 'なし', noteDripOn: 'ときどきしずくが落ちてきます。あふれるとゲームオーバー。', noteDripOff: 'ゲームオーバーなし。小さな粒も取り込み、全部そろうまで消えません。',
+    tension: '界面張力', weak: 'よわい', normal: 'ふつう', strong: 'つよい', byColor: '色別', bySoup: 'スープ別',
+    noteTensionFixed: '弱いほど切れやすく、強いほど丸くまとまって切れにくくなります。', noteTensionColor: '色ごとに変わります。黄色と桃色は切れやすく、紫と青緑はもっちり。', noteTensionSoup: 'スープごとに変わります。塩は切れやすく、味噌と豚骨はもっちり。',
+    continue: L => `つづきから（LEVEL ${L}）`, start: 'はじめる', fromOne: 'LEVEL 1 から', pickLevel: 'レベルを選ぶ',
+    stBest: 'BEST', stVanish: '消した色', stMerged: 'つなげた数', stTime: '遊んだ時間', minutes: n => `${n}分`,
+    settings: '設定', groupSound: '音', se: '効果音', amb: 'プレイ音', groupPlay: '操作', hashi: '箸先の位置', hashiFinger: '指の位置', hashiShift: '左下にずらす',
+    noteHashiOff: 'ラーメンの箸です。指で触れた位置で油をつかみます。', noteHashiOn: 'ラーメンの箸先が指の左下に出ます。押したまま滑らせてもつかめます。',
+    groupLang: '言語', langAuto: '自動', back: 'もどる', pauseTtl: 'ひとやすみ', resume: 'つづける', restart: 'このレベルをやり直す', toTitle: 'タイトルへ',
+    overWater: '水があふれました', overOil: '油があふれました', overSub: '記録はぜんぶ残っています。<br>好きなレベルから、またゆっくりどうぞ。', retry: L => `LEVEL ${L} からもう一度`, pickCleared: 'クリアしたレベルから選ぶ',
+    levelsTtl: 'レベルを選ぶ', levelsSub: '★の枠はボーナスの水面です。', tapStart: 'タップですぐ始める',
+    hint1: 'タッチして<br>色をつなげよう', hint2: '引っ張って<br>のばせるよ', hint3: '離すと少し<br>戻るよ', breath: 'ひと息', pause: '一時停止',
+    noGL: 'この環境ではWebGL2が使えないため、ゲームを表示できません。',
+    statusWater: '水位', statusOil: '油の量', statusLeft: 'のこり', msgWater: '色を消すと下がるよ', msgOil: 'あふれる前に、ひとつに', msgOff: '小さな粒もぜんぶ取り込もう', msgBonusColor: '大きな色を細かく分けよう！', msgBonusOil: '大きな油を細かく分けよう！',
+    goalColor: '同じ色をすべてつなげて<br>消そう！', goalRamen: '油をぜんぶつなげて<br>ひとつにしよう！', goalOff: '色ごとにひとつにまとめて<br>全部そろえよう！', goalBonus: 'すばやくなぞって<br>切り分けよう！',
+    bonusDescColor: '大きな色をすばやくなぞって<br>細かく切り分けよう！', bonusDescOil: '大きな油をすばやくなぞって<br>細かく切り分けよう！', bonusRule: (s, n) => `${s}秒で ${n}個が目標`,
+    ramenName: n => `${n}ラーメン`, ramenSub: L => `LEVEL ${L}　油をぜんぶ、ひとつに`, complete: 'そろった！', chain: n => `つづけて ${n}色！`,
+    breathTtl: 'ひと息', breathAuto: 'ふう… ひと息', breathMsg: '同じ色が引き合います', breathAutoMsg: 'しずくが少し止まります',
+    cutCount: (a, b) => `わけた数 ${a} / 目標 ${b}`, targetHit: '目標達成！ ×1.6', targetMiss: 'のんびりでも大丈夫', maru: 'まんまる！',
+    clearBonus: 'クリアボーナス', calmBonus: 'おだやかボーナス', mergedTime: (n, t) => `つなげた数 ${n}　時間 ${t}`, nextSoup: n => `つぎのスープ: ${n}`, nextWater: n => `つぎの水面: ${n}`, levelClear: L => `LEVEL ${L} クリア`,
+    left: n => `あと ${n}`, allDone: 'そろった！', secLeft: n => ` あと${n}秒`,
+    soups: ['醤油', '塩', '味噌', '豚骨'], waters: ['朝凪', '青空', '夕凪', '月夜'],
+  },
+  en: {
+    title: 'Droplet Merge', modeColor: 'Colorful', modeRamen: 'Ramen',
+    descColor: 'Merge droplets of each color and watch them vanish.', descRamen: 'Gather all the oil in the soup into one. Four soups.',
+    drips: 'New drops', on: 'On', off: 'Off', noteDripOn: 'Drops keep falling in. Overflow ends the game.', noteDripOff: 'No game over. Absorb tiny drops too; nothing vanishes until all are merged.',
+    tension: 'Tension', weak: 'Weak', normal: 'Normal', strong: 'Strong', byColor: 'By color', bySoup: 'By soup',
+    noteTensionFixed: 'Weak tears easily. Strong stays round and holds together.', noteTensionColor: 'Varies by color: yellow and pink tear easily, purple and teal are firm.', noteTensionSoup: 'Varies by soup: shio tears easily, miso and tonkotsu are firm.',
+    continue: L => `Continue (Level ${L})`, start: 'Start', fromOne: 'From Level 1', pickLevel: 'Select Level',
+    stBest: 'BEST', stVanish: 'Cleared', stMerged: 'Merged', stTime: 'Played', minutes: n => `${n} min`,
+    settings: 'Settings', groupSound: 'Sound', se: 'Effects', amb: 'Ambience', groupPlay: 'Controls', hashi: 'Chopstick tip', hashiFinger: 'At finger', hashiShift: 'Lower left',
+    noteHashiOff: 'In Ramen, grabs the oil right where you touch.', noteHashiOn: 'In Ramen, the tips sit lower left of your finger. Slide onto oil to grab it.',
+    groupLang: 'Language', langAuto: 'Auto', back: 'Back', pauseTtl: 'Paused', resume: 'Resume', restart: 'Restart this level', toTitle: 'Back to title',
+    overWater: 'The water overflowed', overOil: 'The oil overflowed', overSub: 'All your records are safe.<br>Pick any level and take your time.', retry: L => `Retry Level ${L}`, pickCleared: 'Choose a cleared level',
+    levelsTtl: 'Select Level', levelsSub: 'Gold rings are bonus stages.', tapStart: 'Tap to start now',
+    hint1: 'Touch to<br>join colors', hint2: 'Pull to<br>stretch', hint3: 'Let go and<br>it springs back', breath: 'Breathe', pause: 'Pause',
+    noGL: 'This game needs WebGL2, which is not available here.',
+    statusWater: 'Water', statusOil: 'Oil', statusLeft: 'Left', msgWater: 'Clearing a color lowers it', msgOil: 'Merge it before it overflows', msgOff: 'Absorb the tiny drops too', msgBonusColor: 'Slice the big colors apart!', msgBonusOil: 'Slice the big oil apart!',
+    goalColor: 'Join every drop of a color<br>to clear it!', goalRamen: 'Join all the oil<br>into one!', goalOff: 'Merge each color into one<br>to finish!', goalBonus: 'Swipe fast<br>to slice!',
+    bonusDescColor: 'Swipe fast to slice<br>the big colors apart!', bonusDescOil: 'Swipe fast to slice<br>the big oil apart!', bonusRule: (s, n) => `Goal: ${n} pieces in ${s} seconds`,
+    ramenName: n => `${n} Ramen`, ramenSub: L => `Level ${L} - gather all the oil`, complete: 'Done!', chain: n => `${n} colors in a row!`,
+    breathTtl: 'Breathe', breathAuto: 'Phew... a breath', breathMsg: 'Same colors draw together', breathAutoMsg: 'Drops pause for a moment',
+    cutCount: (a, b) => `Pieces ${a} / Goal ${b}`, targetHit: 'Goal reached! x1.6', targetMiss: 'No rush at all', maru: 'Perfectly round!',
+    clearBonus: 'Clear bonus', calmBonus: 'Calm bonus', mergedTime: (n, t) => `Merged ${n}   Time ${t}`, nextSoup: n => `Next soup: ${n}`, nextWater: n => `Next water: ${n}`, levelClear: L => `Level ${L} Clear`,
+    left: n => `${n} left`, allDone: 'All done!', secLeft: n => ` ${n}s left`,
+    soups: ['Shoyu', 'Shio', 'Miso', 'Tonkotsu'], waters: ['Morning Calm', 'Blue Sky', 'Evening Calm', 'Moonlit Night'],
+  },
+};
+let lang = 'ja';
+// ブラウザの言語に従う。日本語でも英語でもなければ日本語にする
+function detectLang() {
+  for (const l of navigator.languages || [navigator.language]) {
+    const k = String(l || '').toLowerCase();
+    if (k.startsWith('ja')) return 'ja';
+    if (k.startsWith('en')) return 'en';
+  }
+  return 'ja';
+}
+const t = (k, ...a) => { const v = I18N[lang][k]; return typeof v === 'function' ? v(...a) : v; };
+const lookName = L => t(isRamen() ? 'soups' : 'waters')[themeOf(L)];
 
 function readJSON(key) {
   try { return JSON.parse(localStorage.getItem(key)) || {}; } catch (e) { return {}; }
@@ -494,7 +606,7 @@ function applyTension() {
   }
 }
 const sim = { split: false, boost: 0, round: false };   // split: ボーナス中は同色でも別の塊なら反発させる
-const ptr = { id: null, down: false, rawX: 0, rawY: 0, x: 0, y: 0, grabbing: false, blob: -1, moved: 0, speed: 0, stretch: 0, tethered: false, over: false, tau: 1 };
+const ptr = { id: null, down: false, rawX: 0, rawY: 0, x: 0, y: 0, grabbing: false, blob: -1, moved: 0, speed: 0, stretch: 0, tethered: false, over: false, tau: 1, active: -99 };
 
 function buildPairs() {
   const { x, y, dying } = P, n = P.n;
@@ -526,14 +638,17 @@ function pushPair(i, j, R2, k) {
   return k + 1;
 }
 // 2粒子の関係: 1=溶け合う 0=反発 2=干渉しない
-// 別のしずくは反発し、指で引いた時だけ溶け合う。同じしずくから切れた片は見えない力で引き戻さず、触れたらつながる
+// 別の塊は反発し、指で持っている塊だけが溶け合う。切れた片は引き戻さず、持っている片が触れた時だけつながる
 function sameGroup(i, j, r) {
   if (P.col[i] !== P.col[j]) return 0;
   if (P.blob[i] === P.blob[j]) return 1;
   if (sim.split) return 0;
   if (sim.boost > 0) return 1;
+  const fi = P.fam[i], fj = P.fam[j];
+  if (fi === 2 || fj === 2) return 1;      // 操作の直後に戻っていく小さなかけら
+  if (fi !== 1 && fj !== 1) return 0;
   if (P.lin[i] === P.lin[j]) return r < linkOf[P.col[i]] * .72 ? 1 : 2;   // 切れる距離より近づいて初めて触れたとみなす
-  return P.fam[i] || P.fam[j] ? 1 : 0;
+  return 1;
 }
 
 function simStep() {
@@ -788,11 +903,12 @@ function track() {
   }
   blobList = list.filter(c => c.n >= MIN_BLOB);
 
-  // 小さなかけらは消さず、いちばん近い同じ色の塊へ戻していく
+  // 小さなかけらは消さず、いちばん近い同じ色の塊へ戻していく。放置中は動かさない
+  const tidy = ptr.down || simT - ptr.active < 3;
   for (let i = 0; i < n; i++) {
     if (dying[i]) continue;
     const c = comps.get(find(i));
-    if (c.n >= MIN_BLOB || c.grab || sim.split) { if (P.fam[i] === 2) P.fam[i] = 0; continue; }
+    if (c.n >= MIN_BLOB || c.grab || sim.split || !tidy) { if (P.fam[i] === 2) P.fam[i] = 0; continue; }
     if (c.tx === undefined) {
       c.tx = null;
       let bd = Infinity;
@@ -866,8 +982,8 @@ function updateBeads(dt) {
       }
     }
     if (hit >= 0 && nearest < 62 * 62) {
-      // 通常は指で動かしている同じ色にだけ取り込まれる。追加なしでは触れた同じ色へ入る
-      if (P.col[hit] === d.c && (P.fam[hit] === 1 || !Game.dripsOn) && Game.playing()) { Game.onBead(d, hit); beads.splice(b, 1); continue; }
+      // 指で動かしている同じ色にだけ取り込まれる。放置では合体しない
+      if (P.col[hit] === d.c && P.fam[hit] === 1 && Game.playing()) { Game.onBead(d, hit); beads.splice(b, 1); continue; }
       const m = Math.sqrt(nearest) || 1;
       d.vx += nx / m * .9; d.vy += ny / m * .9;
     }
@@ -927,14 +1043,10 @@ const Snd = {
         d[i] = lp * Math.pow(1 - t, 2.6);
       }
     }
+    this.ir = ir;
     this.rev = ctx.createConvolver(); this.rev.buffer = ir;
     this.revIn = ctx.createGain(); this.revIn.gain.value = .55;
     this.revIn.connect(this.rev); this.rev.connect(this.sfx);
-    // ノイズ源
-    const nb = ctx.createBuffer(1, ctx.sampleRate * 3, ctx.sampleRate), nd = nb.getChannelData(0);
-    let br = 0;
-    for (let i = 0; i < nd.length; i++) { br = (br + (Math.random() * 2 - 1) * .06) * .985; nd[i] = br * 3.2; }
-    this.brown = nb;
     const wb = ctx.createBuffer(1, ctx.sampleRate * 1, ctx.sampleRate), wd = wb.getChannelData(0);
     for (let i = 0; i < wd.length; i++) wd[i] = Math.random() * 2 - 1;
     this.white = wb;
@@ -944,59 +1056,114 @@ const Snd = {
   },
   applyVolumes() {
     if (!this.ctx) return;
-    this.sfx.gain.value = save.se / 100;
-    this.amb.gain.setTargetAtTime(save.amb / 100, this.ctx.currentTime, .3);
+    this.sfx.gain.value = save.seOn ? save.se / 100 : 0;
+    this.amb.gain.setTargetAtTime(save.ambOn ? save.amb / 100 : 0, this.ctx.currentTime, .12);
   },
+  // プレイ音: カラフルは水琴窟、ラーメンはゆっくりしたチャルメラ
   buildAmbient() {
     const ctx = this.ctx;
-    // 水のさざめき
-    const src = ctx.createBufferSource(); src.buffer = this.brown; src.loop = true;
-    const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 620;
-    const g = ctx.createGain(); g.gain.value = .13;
-    const lfo = ctx.createOscillator(); lfo.frequency.value = 1 / 8;   // 8秒周期の呼吸
-    const lg = ctx.createGain(); lg.gain.value = .05;
-    lfo.connect(lg); lg.connect(g.gain); lfo.start();
-    src.connect(lp); lp.connect(g); g.connect(this.amb); src.start();
-    // やわらかい持続音
-    this.pad = [1, 1.5, 2, 3].map((ratio, i) => {
-      const o = ctx.createOscillator(); o.type = 'sine';
-      o.frequency.value = this.root * ratio * (1 + (i - 1.5) * .0012);
-      const og = ctx.createGain(); og.gain.value = [.05, .032, .022, .01][i];
-      const l = ctx.createOscillator(); l.frequency.value = 1 / (8 + i * 3);
-      const lgg = ctx.createGain(); lgg.gain.value = og.gain.value * .6;
-      l.connect(lgg); lgg.connect(og.gain); l.start();
-      o.connect(og); og.connect(this.amb); o.start();
-      return { o, ratio, i };
-    });
-    this.chimeLoop();
+    this.ambRev = ctx.createConvolver(); this.ambRev.buffer = this.ir;
+    this.ambSend = ctx.createGain(); this.ambSend.gain.value = .9;
+    this.ambSend.connect(this.ambRev); this.ambRev.connect(this.amb);
+    this.playLoop(.8);
   },
-  chimeLoop() {
-    clearTimeout(this.chimeTimer);
-    this.chimeTimer = setTimeout(() => {
-      if (this.ctx && this.ctx.state === 'running' && save.amb > 0 && !document.hidden) {
-        const v = .05 * save.amb / 100;
-        this.pluck(this.note(rand(5, 13) | 0), v, rand(-.5, .5), .65, this.amb);
+  playLoop(delay) {
+    clearTimeout(this.playTimer);
+    this.playTimer = setTimeout(() => {
+      const on = this.ctx && this.ctx.state === 'running' && save.ambOn && save.amb > 0 && !document.hidden;
+      if (isRamen()) {
+        if (on) this.charumera();
+        this.playLoop(on ? rand(23, 31) : 2);
+      } else {
+        if (on) this.suikinkutsu();
+        this.playLoop(rand(1.4, 4.4));
       }
-      this.chimeLoop();
-    }, rand(4500, 11000));
+    }, delay * 1000);
   },
+  modeChanged() {
+    if (!this.ctx) return;
+    if (this.phrase) { this.phrase.gain.cancelScheduledValues(this.ctx.currentTime); this.phrase.gain.setTargetAtTime(0, this.ctx.currentTime, .15); this.phrase = null; }
+    this.playLoop(.7);
+  },
+  // 甕の中で響く水滴: 澄んだ高い音に、少し遅れた反響が続く
+  kin(f, vol, pan, when) {
+    const ctx = this.ctx, e = this.env(vol, .002, rand(.7, 1.5), when), p = this.panner(pan);
+    const o1 = ctx.createOscillator(), o2 = ctx.createOscillator(), g2 = ctx.createGain();
+    o1.frequency.setValueAtTime(f * 1.012, e.t); o1.frequency.exponentialRampToValueAtTime(f, e.t + .05);
+    o2.frequency.value = f * 2.76; g2.gain.value = .16;
+    o1.connect(e.g); o2.connect(g2); g2.connect(e.g);
+    e.g.connect(p); p.connect(this.amb); p.connect(this.ambSend);
+    for (const o of [o1, o2]) { o.start(e.t); o.stop(e.end); }
+  },
+  suikinkutsu() {
+    const scale = [1175, 1319, 1568, 1760, 2093, 2349, 2637, 3136];
+    const count = Math.random() < .22 ? 3 : Math.random() < .35 ? 2 : 1;
+    let at = 0;
+    for (let i = 0; i < count; i++) {
+      const f = scale[rand(scale.length) | 0], pan = rand(-.45, .45), vol = rand(.18, .28) * (1 - i * .18);
+      this.kin(f, vol, pan, at);
+      this.kin(f, vol * .34, -pan * .6, at + rand(.09, .16));
+      at += rand(.16, .42);
+    }
+  },
+  // ソラシーラソー ソラシラソラー を遠くから聞こえるように、ゆっくり吹く
+  charumera() {
+    const ctx = this.ctx, beat = .62, t0 = ctx.currentTime + .05;
+    const G = 587.33, A = 659.25, B = 739.99;
+    const notes = [[G, 1], [A, 1], [B, 2], [A, 1], [G, 2], [0, 1], [G, 1], [A, 1], [B, 1], [A, 1], [G, 1], [A, 3]];
+    const o1 = ctx.createOscillator(), o2 = ctx.createOscillator();
+    o1.type = 'sawtooth'; o2.type = 'sawtooth'; o2.detune.value = 7;
+    const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1350; bp.Q.value = .9;
+    const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 3400;
+    const g = ctx.createGain(); g.gain.value = 0;
+    const out = ctx.createGain(), p = this.panner(rand(-.35, .35));
+    out.gain.value = 1;
+    const vib = ctx.createOscillator(), vg = ctx.createGain();
+    vib.frequency.value = 5.1; vg.gain.value = 6;
+    vib.connect(vg); vg.connect(o1.frequency); vg.connect(o2.frequency);
+    o1.connect(bp); o2.connect(bp); bp.connect(lp); lp.connect(g); g.connect(out); out.connect(p);
+    p.connect(this.amb); p.connect(this.ambSend);
+    const vol = .19 * rand(.7, 1);
+    let at = t0, last = 0;
+    for (const [f, len] of notes) {
+      const d = len * beat;
+      if (f) {
+        const from = last || f;
+        for (const o of [o1, o2]) { o.frequency.setValueAtTime(from, at); o.frequency.exponentialRampToValueAtTime(f, at + .06); }
+        g.gain.setValueAtTime(last ? vol * .55 : .0001, at);
+        g.gain.linearRampToValueAtTime(vol, at + .07);
+        g.gain.setValueAtTime(vol, at + d - .1);
+        g.gain.linearRampToValueAtTime(vol * .55, at + d - .01);
+        last = f;
+      } else {
+        g.gain.setValueAtTime(vol * .55, at);
+        g.gain.linearRampToValueAtTime(.0001, at + .08);
+        last = 0;
+      }
+      at += d;
+    }
+    g.gain.setValueAtTime(vol * .55, at - .01);
+    g.gain.linearRampToValueAtTime(.0001, at + .35);
+    const end = at + .5;
+    for (const o of [o1, o2, vib]) { o.start(t0); o.stop(end); }
+    this.phrase = out;
+  },
+  // のばしている間の音: ノイズではなく、低くやわらかい音
   buildStretch() {
     const ctx = this.ctx;
-    const src = ctx.createBufferSource(); src.buffer = this.brown; src.loop = true;
-    this.strF = ctx.createBiquadFilter(); this.strF.type = 'bandpass'; this.strF.frequency.value = 300; this.strF.Q.value = 3;
+    this.strO = ctx.createOscillator(); this.strO.type = 'triangle'; this.strO.frequency.value = 130;
+    const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 520;
     this.strG = ctx.createGain(); this.strG.gain.value = 0;
-    src.connect(this.strF); this.strF.connect(this.strG); this.strG.connect(this.sfx); src.start();
+    this.strO.connect(lp); lp.connect(this.strG); this.strG.connect(this.sfx); this.strO.start();
   },
   setStretch(speed, stretch) {
     if (!this.ctx) return;
     const t = this.ctx.currentTime;
-    this.strG.gain.setTargetAtTime(clamp(speed * .055, 0, .32), t, .06);
-    this.strF.frequency.setTargetAtTime(220 + stretch * 240 + speed * 22, t, .08);
+    this.strG.gain.setTargetAtTime(clamp(speed * .016, 0, .08), t, .06);
+    this.strO.frequency.setTargetAtTime(115 + stretch * 70 + speed * 11, t, .08);
   },
   setRoot(themeIdx) {
     this.root = [196, 220, 174.61, 164.81][themeIdx] || 196;
-    if (!this.ctx) return;
-    for (const p of this.pad) p.o.frequency.setTargetAtTime(this.root * p.ratio * (1 + (p.i - 1.5) * .0012), this.ctx.currentTime, 2.5);
   },
   note(n) {
     const r = [1, 9 / 8, 5 / 4, 3 / 2, 5 / 3];
@@ -1092,7 +1259,7 @@ const Snd = {
     });
   },
   breath() {
-    this.noise(240, 1500, .7, 1.6, .16);
+    this.noise(240, 1200, .7, 1.2, .06);
     [0, 3, 5].forEach((n, i) => this.pluck(this.note(n - 5), .13, (i - 1) * .3, 2.6, null, .2 + i * .22));
   },
   over() { [7, 5, 3, 0].forEach((n, i) => this.pluck(this.note(n - 5), .16, 0, 2, null, i * .24)); },
@@ -1751,13 +1918,13 @@ const Game = {
     showOverlay(null);
     $('ui').classList.remove('off');
     if (this.bonus) this.beginIntro();
-    else if (isRamen()) showToast(`${lookOf(L).name}ラーメン`, `<p>LEVEL ${L}　油をぜんぶ、ひとつに</p>`, 1700);
+    else if (isRamen()) showToast(t('ramenName', lookName(L)), `<p>${t('ramenSub', L)}</p>`, 1700);
   },
   // ボーナスは、まず前面で知らせてから時間を動かす
   beginIntro() {
     this.state = 'intro';
-    $('bonusDesc').innerHTML = isRamen() ? '大きな油をすばやくなぞって<br>細かく切り分けよう！' : '大きな色をすばやくなぞって<br>細かく切り分けよう！';
-    $('bonusRule').textContent = `${this.bonusTotal}秒で ${this.bonusTarget}個が目標`;
+    $('bonusDesc').innerHTML = t(isRamen() ? 'bonusDescOil' : 'bonusDescColor');
+    $('bonusRule').textContent = t('bonusRule', this.bonusTotal, this.bonusTarget);
     showOverlay('ovBonus');
     Snd.bonusIntro();
     this.after(2.8, () => this.beginBonus());
@@ -1882,7 +2049,7 @@ const Game = {
         this.doneCols.push(col);
         this.flash[col] = .8;
         this.bumpCombo();
-        this.addScore(120 * this.mult() * this.levelMult(), s.sx / s.n, s.sy / s.n, col, 'そろった！');
+        this.addScore(120 * this.mult() * this.levelMult(), s.sx / s.n, s.sy / s.n, col, t('complete'));
         Snd.pluck(Snd.note(Snd.step + 4), .22, 0, 1.4);
         ripple(s.sx / s.n, s.sy / s.n, .8);
       }
@@ -1937,7 +2104,7 @@ const Game = {
     if (sim.boost <= 0) this.bumpCombo();
     save.vanish++; this.vanishedThisLevel++;
     const pts = (420 + Math.min(n, 300) * 7) * (sim.boost > 0 ? .5 : this.mult()) * this.levelMult() * (1 + this.chain * .35);
-    this.addScore(pts, cx, cy, col, this.chain ? `つづけて ${this.chain + 1}色！` : '', true);
+    this.addScore(pts, cx, cy, col, this.chain ? t('chain', this.chain + 1) : '', true);
     Snd.vanish(cx / DISH, this.chain);
     ripple(cx, cy, 2.2);
     burst(cx, cy, col, 90, 16, 1.5);
@@ -1948,11 +2115,11 @@ const Game = {
   },
 
   onBead(d, hit) {
-    const held = P.fam[hit] === 1, blob = P.blob[hit];
+    const blob = P.blob[hit];
     burst(d.x, d.y, d.c, 4, 3.4, .55);
     Snd.bead(d.x / DISH);
     if (!this.dripsOn) addParticle(d.x, d.y, d.c, blob, 1);   // 消えずに塊の一部になる
-    if (held) { this.score += 4; this.touchBest(); }
+    this.score += 4; this.touchBest();
   },
 
   addScore(v, x, y, col, extra, big) {
@@ -1973,12 +2140,13 @@ const Game = {
     if (this.state !== 'play' || this.bonus) return;
     if (save.charges <= 0) { Snd.ui(); return; }
     save.charges--;
-    this.dripPause = 16; sim.boost = 1;
-    this.after(5, () => { sim.boost = 0; });
+    this.dripPause = 16;
+    // 同じ色が引き合うのは自分で使った時だけ。自動のひと息は止めるだけにする
+    if (!auto) { sim.boost = 1; this.after(5, () => { sim.boost = 0; }); }
     Snd.breath();
     ripple(0, 0, 2.2);
     this.overT = 0; this.warned = false;
-    showToast(auto ? 'ふう… ひと息' : 'ひと息', `<p>しずくが止まって、同じ色が引き合います</p>`, 1800);
+    showToast(t(auto ? 'breathAuto' : 'breathTtl'), `<p>${t(auto ? 'breathAutoMsg' : 'breathMsg')}</p>`, 1800);
     this.syncCharges();
     persist();
   },
@@ -2059,7 +2227,7 @@ const Game = {
     });
     this.after(.08 * list.length + .5, () => {
       Snd.clear();
-      this.finishLevel([`わけた数 ${list.length} / 目標 ${this.bonusTarget}`, hit ? '目標達成！ ×1.6' : 'のんびりでも大丈夫'], total);
+      this.finishLevel([t('cutCount', list.length, this.bonusTarget), t(hit ? 'targetHit' : 'targetMiss')], total);
     });
   },
 
@@ -2099,7 +2267,7 @@ const Game = {
       const pts = (420 + Math.min(c.n, 300) * 7) * this.mult() * this.levelMult() * (1 + i * .2);
       total += Math.round(pts / 5) * 5;
       this.after(i * .13, () => {
-        this.addScore(pts, c.x, c.y - c.R - 60, c.col, 'まんまる！', true);
+        this.addScore(pts, c.x, c.y - c.R - 60, c.col, t('maru'), true);
         this.flash[c.col] = 1;
         if (i === 0) Snd.maru();
         else { Snd.pluck(Snd.note(i * 2), .2, c.x / DISH, 1.4); Snd.plop(130, 320, .2, .26, c.x / DISH); }
@@ -2147,7 +2315,7 @@ const Game = {
         burst(0, 0, -1, 70, 20, 1.3);
         ripple(0, 0, 2);
       }
-      this.finishLevel([`クリアボーナス +${fmt(clearBonus)}`, `おだやかボーナス +${fmt(calm)}`, `つなげた数 ${this.mergedThisLevel}　時間 ${fmtTime(this.levelTime)}`], clearBonus + calm + maruPts, !!maruPts);
+      this.finishLevel([`${t('clearBonus')} +${fmt(clearBonus)}`, `${t('calmBonus')} +${fmt(calm)}`, t('mergedTime', this.mergedThisLevel, fmtTime(this.levelTime))], clearBonus + calm + maruPts, !!maruPts);
     });
   },
   finishLevel(lines, sum, maru = false) {
@@ -2161,8 +2329,8 @@ const Game = {
     clearBoard();
     this.syncCharges();
     const changed = themeOf(nextL) !== themeOf(L);
-    const nextLook = isRamen() ? `つぎのスープ: ${lookOf(nextL).name}` : `つぎの水面: ${lookOf(nextL).name}`;
-    showToast(`LEVEL ${L} クリア`, lines.map(s => `<p>${s}</p>`).join('') + `<p class="sum">+${fmt(sum)}</p>` + (changed ? `<p>${nextLook}</p>` : ''), 2600, maru ? this.toastPlace : '');
+    const nextLook = t(isRamen() ? 'nextSoup' : 'nextWater', lookName(nextL));
+    showToast(t('levelClear', L), lines.map(s => `<p>${s}</p>`).join('') + `<p class="sum">+${fmt(sum)}</p>` + (changed ? `<p>${nextLook}</p>` : ''), 2600, maru ? this.toastPlace : '');
     if (maru) this.after(2.25, () => this.dissolveRound());
     this.after(2.9, () => { this.newBest = false; $('best').classList.remove('new'); this.start(nextL, true); });
   },
@@ -2173,8 +2341,8 @@ const Game = {
     persist();
     clearBoard();
     $('overStats').innerHTML = `<div><b>${fmt(this.score)}</b>SCORE</div><div><b>${this.level}</b>LEVEL</div><div><b>${fmt(ms().best)}</b>BEST</div>`;
-    $('btnRetry').textContent = `LEVEL ${this.level} からもう一度`;
-    $('overTtl').textContent = isRamen() ? '油があふれました' : '水があふれました';
+    $('btnRetry').textContent = t('retry', this.level);
+    $('overTtl').textContent = t(isRamen() ? 'overOil' : 'overWater');
     showOverlay('ovOver');
   },
 
@@ -2247,9 +2415,9 @@ const Game = {
     $('hints').classList.toggle('gone', !showHints);
     $('statusStar').style.display = this.bonus ? '' : 'none';
     const ramen = isRamen(), off = !this.dripsOn;
-    $('statusTtl').textContent = this.bonus ? 'BONUS' : off ? 'のこり' : ramen ? '油の量' : '水位';
-    $('statusMsg').textContent = this.bonus ? (ramen ? '大きな油を細かく分けよう！' : '大きな色を細かく分けよう！') : off ? '小さな粒もぜんぶ取り込もう' : ramen ? 'あふれる前に、ひとつに' : '色を消すと下がるよ';
-    $('goalText').innerHTML = this.bonus ? 'すばやくなぞって<br>切り分けよう！' : ramen ? '油をぜんぶつなげて<br>ひとつにしよう！' : off ? '色ごとにひとつにまとめて<br>全部そろえよう！' : '同じ色をすべてつなげて<br>消そう！';
+    $('statusTtl').textContent = this.bonus ? 'BONUS' : t(off ? 'statusLeft' : ramen ? 'statusOil' : 'statusWater');
+    $('statusMsg').textContent = t(this.bonus ? (ramen ? 'msgBonusOil' : 'msgBonusColor') : off ? 'msgOff' : ramen ? 'msgOil' : 'msgWater');
+    $('goalText').innerHTML = t(this.bonus ? 'goalBonus' : ramen ? 'goalRamen' : off ? 'goalOff' : 'goalColor');
     resize();
   },
   syncNext() {
@@ -2279,11 +2447,11 @@ const Game = {
       const left = Math.max(0, blobList.length - this.colorsLeft.length) + beads.length;
       if (this.state === 'play') this.leftMax = Math.max(this.leftMax, left);
       $('statusBar').style.width = (this.colorsLeft.length ? 1 - left / this.leftMax : 1) * 100 + '%';
-      $('statusVal').textContent = this.colorsLeft.length ? `あと ${left}` : 'そろった！';
+      $('statusVal').textContent = this.colorsLeft.length ? t('left', left) : t('allDone');
       st.classList.remove('warn');
     } else {
       $('statusBar').style.width = clamp(this.meter, 0, 1) * 100 + '%';
-      const left = this.meter >= 1 && save.charges <= 0 ? ` あと${Math.ceil(OVER_GRACE - this.overT)}秒` : '';
+      const left = this.meter >= 1 && save.charges <= 0 ? t('secLeft', Math.ceil(OVER_GRACE - this.overT)) : '';
       $('statusVal').textContent = Math.round(this.meter * 100) + '%' + left;
       st.classList.toggle('warn', this.meter >= .85);
     }
@@ -2436,6 +2604,7 @@ function releaseGrab(withSound = true) {
 canvas.addEventListener('pointerdown', e => {
   Snd.init();
   if (ptr.down || !Game.playing()) return;
+  ptr.active = simT;
   const [wx, wy] = pointerWorld(e);
   ptr.id = e.pointerId; ptr.down = true; ptr.rawX = ptr.x = wx; ptr.rawY = ptr.y = wy; ptr.moved = 0;
   try { canvas.setPointerCapture(e.pointerId); } catch (err) {}
@@ -2445,6 +2614,7 @@ canvas.addEventListener('pointerdown', e => {
 });
 canvas.addEventListener('pointermove', e => {
   if (e.pointerId !== ptr.id || !ptr.down) return;
+  ptr.active = simT;
   const [wx, wy] = pointerWorld(e);
   const d = Math.hypot(wx, wy), lim = INNER - 20;
   ptr.rawX = d > lim ? wx * lim / d : wx; ptr.rawY = d > lim ? wy * lim / d : wy;
@@ -2454,6 +2624,7 @@ canvas.addEventListener('pointermove', e => {
 });
 const pointerEnd = e => {
   if (e.pointerId !== ptr.id) return;
+  ptr.active = simT;
   ptr.down = false; ptr.id = null;
   if (Game.bonus) Game.endStroke();
   releaseGrab(Game.playing());
@@ -2500,23 +2671,20 @@ function showToast(title, html, ms, place = '') {
   toastTimer = setTimeout(() => $('toast').classList.remove('on'), ms);
 }
 function statsHtml() {
-  return `<div><b>${fmt(ms().best)}</b>BEST</div><div><b>${fmt(save.vanish)}</b>消した色</div><div><b>${fmt(save.merges)}</b>つなげた数</div><div><b>${save.playSec / 60 | 0}分</b>水面の時間</div>`;
+  return `<div><b>${fmt(ms().best)}</b>${t('stBest')}</div><div><b>${fmt(save.vanish)}</b>${t('stVanish')}</div><div><b>${fmt(save.merges)}</b>${t('stMerged')}</div><div><b>${t('minutes', save.playSec / 60 | 0)}</b>${t('stTime')}</div>`;
 }
 function refreshTitle() {
   const has = ms().played;
-  $('btnContinue').style.display = has ? '' : 'none';
-  $('btnContinue').textContent = `つづきから（LEVEL ${ms().level}）`;
-  $('btnNew').classList.toggle('main', !has);
-  $('btnNew').textContent = has ? 'LEVEL 1 からはじめる' : 'はじめる';
-  $('btnPick').style.display = ms().maxLevel > 1 ? '' : 'none';
-  $('titleStats').innerHTML = has ? statsHtml() : '';
+  $('btnContinue').textContent = has ? t('continue', ms().level) : t('start');
+  // ボタンの数と位置は変えず、使えない時は薄くするだけにする
+  $('btnNew').disabled = !has;
+  $('btnPick').disabled = ms().maxLevel <= 1;
+  $('titleStats').innerHTML = statsHtml();
   const ramen = isRamen();
   $('tabColor').classList.toggle('on', !ramen);
   $('tabRamen').classList.toggle('on', ramen);
-  $('modeDesc').innerHTML = ramen ? 'スープに浮かぶ油を、ひとつにまとめる。<br>醤油、塩、味噌、豚骨とスープが変わります。' : 'カラフルなしずくを、色ごとにつなげて消す。<br>同じ色がすべてつながると、はじけます。';
-  syncTension();
-  syncDrips();
-  syncHashiBox();
+  $('modeDesc').textContent = t(ramen ? 'descRamen' : 'descColor');
+  syncOptions();
 }
 function setMode(m) {
   if (save.mode === m) return;
@@ -2529,90 +2697,54 @@ function setMode(m) {
   resize();
   refreshTitle();
   demoBoard();
+  Snd.modeChanged();
 }
-const TENSION_NOTE = {
-  fixed: '弱いほど細くのびて切れやすく、強いほど丸くまとまって切れにくくなります。',
-  color: '色ごとに張力が変わります。黄色と桃色は切れやすく、紫と青緑はもっちりしています。',
-  soup: 'スープごとに変わります。塩は切れやすく、味噌と豚骨はもっちりしています。',
-};
-function mountTension(box) {
-  box.innerHTML = `<span class="ttl">界面張力（表面張力）</span>
-    <div class="chips">
-      <button class="chip" data-v="15">よわい</button><button class="chip" data-v="50">ふつう</button>
-      <button class="chip" data-v="85">つよい</button><button class="chip" data-v="by"></button>
-    </div>
-    <input type="range" min="0" max="100" aria-label="界面張力">
-    <span class="note"></span>`;
-  box.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
-    Snd.init(); Snd.ui();
-    if (c.dataset.v === 'by') save.tensionMode = 'byColor';
-    else { save.tensionMode = 'fixed'; save.tension = +c.dataset.v; }
-    tensionChanged();
-  }));
-  box.querySelector('input').addEventListener('input', e => {
-    save.tensionMode = 'fixed'; save.tension = +e.target.value;
-    tensionChanged();
-  });
-}
-function mountDrips(box) {
-  box.innerHTML = `<span class="ttl">しずくの追加</span>
-    <div class="chips"><button class="chip" data-d="1">あり</button><button class="chip" data-d="0">なし</button></div>
-    <span class="note"></span>`;
-  box.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
-    Snd.init(); Snd.ui();
-    save.drips = c.dataset.d === '1';
-    persist(); syncDrips();
-  }));
-}
-function syncDrips() {
-  document.querySelectorAll('.dripBox').forEach(box => {
-    box.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', (c.dataset.d === '1') === save.drips));
-    const later = box.dataset.later && Game.dripsOn !== save.drips ? ' つぎのレベルから変わります。' : '';
-    box.querySelector('.note').textContent = (save.drips
-      ? 'ときどきしずくが落ちてきます。あふれるとゲームオーバーです。'
-      : 'ゲームオーバーなし。小さな粒も取り込み、全部そろうまで消えません。') + later;
-  });
-}
-function mountHashi(box) {
-  box.innerHTML = `<span class="ttl">箸先の位置</span>
-    <div class="chips"><button class="chip" data-s="0">指の位置</button><button class="chip" data-s="1">左下にずらす</button></div>
-    <span class="note"></span>`;
-  box.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
-    Snd.init(); Snd.ui();
-    save.hashiShift = c.dataset.s === '1';
-    persist(); syncHashiBox();
-  }));
-}
-function syncHashiBox() {
-  document.querySelectorAll('.hashiBox').forEach(box => {
-    box.style.display = isRamen() ? '' : 'none';
-    box.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', (c.dataset.s === '1') === save.hashiShift));
-    box.querySelector('.note').textContent = save.hashiShift
-      ? '箸先が指の左下に出て、その位置で油をつかみます。押したまま滑らせてもつかめます。'
-      : '指で触れた位置で油をつかみます。';
-  });
-}
-function tensionChanged() { applyTension(); persist(); syncTension(); }
-function syncTension() {
+// 設定の表示をまとめて更新する
+function syncOptions() {
   const by = save.tensionMode === 'byColor';
-  document.querySelectorAll('.tensionBox').forEach(box => {
+  document.querySelectorAll('.tensionChips').forEach(box => {
+    if (!box.children.length) box.innerHTML = '<button class="chip" data-v="15"></button><button class="chip" data-v="50"></button><button class="chip" data-v="85"></button><button class="chip" data-v="by"></button>';
     box.querySelectorAll('.chip').forEach(c => {
-      if (c.dataset.v === 'by') c.textContent = isRamen() ? 'スープごと' : '色ごと';
+      c.textContent = t({ 15: 'weak', 50: 'normal', 85: 'strong', by: isRamen() ? 'bySoup' : 'byColor' }[c.dataset.v]);
       c.classList.toggle('on', c.dataset.v === 'by' ? by : !by && +c.dataset.v === save.tension);
     });
-    const r = box.querySelector('input');
-    r.value = save.tension; r.style.display = by ? 'none' : '';
-    box.querySelector('.note').textContent = !by ? TENSION_NOTE.fixed : isRamen() ? TENSION_NOTE.soup : TENSION_NOTE.color;
   });
+  const rt = $('rngTension');
+  rt.value = save.tension; rt.disabled = by;
+  $('tensionNote').textContent = t(!by ? 'noteTensionFixed' : isRamen() ? 'noteTensionSoup' : 'noteTensionColor');
+  document.querySelectorAll('#dripChips .chip').forEach(c => c.classList.toggle('on', (c.dataset.d === '1') === save.drips));
+  $('dripNote').textContent = t(save.drips ? 'noteDripOn' : 'noteDripOff');
+  document.querySelectorAll('#hashiChips .chip').forEach(c => c.classList.toggle('on', (c.dataset.s === '1') === save.hashiShift));
+  $('hashiNote').textContent = t(save.hashiShift ? 'noteHashiOn' : 'noteHashiOff');
+  document.querySelectorAll('#langChips .chip').forEach(c => c.classList.toggle('on', c.dataset.l === save.lang));
+  for (const [id, on] of [['swSe', save.seOn], ['swAmb', save.ambOn]]) {
+    $(id).classList.toggle('on', on);
+    $(id).setAttribute('aria-checked', on);
+    $(id).textContent = on ? 'ON' : 'OFF';
+  }
+  $('rngSe').value = save.se; $('rngSe').disabled = !save.seOn;
+  $('rngAmb').value = save.amb; $('rngAmb').disabled = !save.ambOn;
+}
+function applyLang() {
+  lang = save.lang === 'auto' ? detectLang() : save.lang;
+  document.documentElement.lang = lang;
+  document.title = t('title');
+  document.querySelectorAll('[data-t]').forEach(el => { el.innerHTML = t(el.dataset.t); });
+  document.querySelectorAll('[data-t-aria]').forEach(el => el.setAttribute('aria-label', t(el.dataset.tAria)));
+  refreshTitle();
+  if (Game.state !== 'title') { Game.syncAll(); $('pauseStats').innerHTML = statsHtml(); }
+}
+let settingsBack = 'ovTitle';
+function openSettings(from) {
+  settingsBack = from;
+  syncOptions();
+  showOverlay('ovSettings');
 }
 function pause() {
   if (Game.state !== 'play') return;
   Game.state = 'paused';
   pointerEndAll();
   $('pauseStats').innerHTML = statsHtml();
-  syncTension();
-  syncDrips();
-  syncHashiBox();
   showOverlay('ovPause');
   Game.saveBoard();
   persist();
@@ -2667,14 +2799,34 @@ function demoBoard() {
 }
 
 const uiClick = (id, fn) => $(id).addEventListener('click', () => { Snd.init(); Snd.ui(); fn(); });
-document.querySelectorAll('.tensionBox').forEach(mountTension);
-document.querySelectorAll('.dripBox').forEach(mountDrips);
-document.querySelectorAll('.hashiBox').forEach(mountHashi);
 uiClick('tabColor', () => setMode('color'));
 uiClick('tabRamen', () => setMode('ramen'));
 $('ovBonus').addEventListener('click', () => { Snd.init(); Game.beginBonus(); });
-uiClick('btnContinue', () => Game.resume());
-uiClick('btnNew', () => { clearBoard(); ms().checkpoints[1] = 0; Game.newBest = false; $('best').classList.remove('new'); Game.start(1, false); });
+const startOver = () => { clearBoard(); ms().checkpoints[1] = 0; Game.newBest = false; $('best').classList.remove('new'); Game.start(1, false); };
+uiClick('btnContinue', () => { if (ms().played) Game.resume(); else startOver(); });
+uiClick('btnNew', startOver);
+uiClick('btnSettings', () => openSettings('ovTitle'));
+uiClick('btnSettings2', () => openSettings('ovPause'));
+uiClick('btnSetBack', () => { refreshTitle(); showOverlay(settingsBack); });
+uiClick('swSe', () => { save.seOn = !save.seOn; Snd.applyVolumes(); persist(); syncOptions(); });
+uiClick('swAmb', () => { save.ambOn = !save.ambOn; Snd.applyVolumes(); persist(); syncOptions(); });
+const chipGroup = (sel, fn) => document.querySelectorAll(sel).forEach(box => box.addEventListener('click', e => {
+  const c = e.target.closest('.chip');
+  if (!c) return;
+  Snd.init(); Snd.ui();
+  fn(c);
+  persist();
+  syncOptions();
+}));
+chipGroup('.tensionChips', c => {
+  if (c.dataset.v === 'by') save.tensionMode = 'byColor';
+  else { save.tensionMode = 'fixed'; save.tension = +c.dataset.v; }
+  applyTension();
+});
+chipGroup('#dripChips', c => { save.drips = c.dataset.d === '1'; });
+chipGroup('#hashiChips', c => { save.hashiShift = c.dataset.s === '1'; });
+chipGroup('#langChips', c => { save.lang = c.dataset.l; applyLang(); });
+$('rngTension').addEventListener('input', e => { save.tensionMode = 'fixed'; save.tension = +e.target.value; applyTension(); persist(); syncOptions(); });
 uiClick('btnPick', () => openLevels('ovTitle'));
 uiClick('btnPick2', () => openLevels('ovPause'));
 uiClick('btnPick3', () => openLevels('ovOver'));
@@ -2685,7 +2837,6 @@ uiClick('btnRestart', () => { clearBoard(); Game.start(Game.level, false); });
 uiClick('btnToTitle', toTitle);
 uiClick('btnRetry', () => Game.start(Game.level, false));
 $('breath').addEventListener('click', () => { Snd.init(); Game.breath(false); });
-$('rngSe').value = save.se; $('rngAmb').value = save.amb;
 $('rngSe').addEventListener('input', e => { save.se = +e.target.value; Snd.applyVolumes(); persist(); });
 $('rngSe').addEventListener('change', () => Snd.plop(480, 1100, .1, .22));
 $('rngAmb').addEventListener('input', e => { save.amb = +e.target.value; Snd.applyVolumes(); persist(); });
@@ -2752,7 +2903,8 @@ function boot() {
   Game.level = ms().level;
   applyTension();
   resize();
-  refreshTitle();
+  syncOptions();
+  applyLang();
   demoBoard();
   // テーマは現在のレベルから始める
   const T = lookOf(ms().level);
@@ -2762,7 +2914,7 @@ function boot() {
 }
 boot();
 // 動作確認用
-window.__oilmerge = { TIP_SHIFT, spawnBlob, blobCircles, Game, P, ptr, save, sim, tau, linkOf, ms, setMode, beads, PHYS, Snd, colorStat, simStep, track, reap, toCss, view, get blobList() { return blobList; }, get np() { return np; } };
+window.__oilmerge = { applyLang, syncOptions, TIP_SHIFT, spawnBlob, blobCircles, Game, P, ptr, save, sim, tau, linkOf, ms, setMode, beads, PHYS, Snd, colorStat, simStep, track, reap, toCss, view, get blobList() { return blobList; }, get np() { return np; } };
 </script>
 </body>
 </html>
